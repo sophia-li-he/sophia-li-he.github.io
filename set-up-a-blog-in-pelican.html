@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Set up a blog in Pelican</title>
+        <link rel="stylesheet" href="https://sophia-li-he.github.io/theme/css/main.css" />
+        <link href="https://sophia-li-he.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://sophia-li-he.github.io/">Sophia He's Data Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="https://sophia-li-he.github.io/category/python.html">Python</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://sophia-li-he.github.io/set-up-a-blog-in-pelican.html" rel="bookmark"
+           title="Permalink to Set up a blog in Pelican">Set up a blog in Pelican</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-05-10T10:20:00-04:00">
+                Published: Fri 10 May 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://sophia-li-he.github.io/author/sophia-he.html">Sophia He</a>
+        </address>
+<p>In <a href="https://sophia-li-he.github.io/category/python.html">Python</a>.</p>
+
+</footer><!-- /.post-info -->      <h1>Set up a blog in Pelican</h1>
+<div class="highlight"><pre><span></span><span class="nb">source</span> activate pyspark_env
+pip install pelican markdown
+</pre></div>
+
+
+<p>Create a new github repo with repo name as sophia-li-he.github.io
+Change directory to the folder where you want to save your blog</p>
+<div class="highlight"><pre><span></span>$ git clone https://github.com/sophia-li-he/sophia-li-he.github.io.git
+</pre></div>
+
+
+<p>Change to the new directory</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> sophia-li-he.github.io
+</pre></div>
+
+
+<p>Use Pelican quickstart</p>
+<div class="highlight"><pre><span></span>pelican-quickstart
+</pre></div>
+
+
+<p>Answer below questions</p>
+<blockquote>
+<p>Where do you want to create your new web site? [.] 
+What will be the title of this web site? Sophia He's Data Blog
+Who will be the author of this web site? Sophia He
+What will be the default language of this web site? [en] 
+Do you want to specify a URL prefix? e.g., https://example.com   (Y/n) Y
+https://sophia-li-he.github.io
+Do you want to enable article pagination? (Y/n) n
+What is your time zone? [Europe/Paris] America/New_York
+Do you want to generate a tasks.py/Makefile to automate generation and publishing? (Y/n) Y
+Do you want to upload your website using FTP? (y/N) N
+Do you want to upload your website using SSH? (y/N) N
+Do you want to upload your website using Dropbox? (y/N) N
+Do you want to upload your website using S3? (y/N) N
+Do you want to upload your website using Rackspace Cloud Files? (y/N) N
+Do you want to upload your website using GitHub Pages? (y/N) y
+Is this your personal page (username.github.io)? (y/N) y
+Done. Your new project is available at /Users/sophiahe/Sophia/700_Tech/780_data_blog/sophia-li-he.github.io</p>
+</blockquote>
+<p>Generate content of the blog</p>
+<div class="highlight"><pre><span></span>pelican content
+</pre></div>
+
+
+<p>Preview the blog at http://localhost:8000/</p>
+<div class="highlight"><pre><span></span>pelican -l
+</pre></div>
+
+
+<p>Push your changes to github</p>
+<div class="highlight"><pre><span></span>$ git add -A <span class="o">&amp;&amp;</span> git commit -a -m <span class="s1">&#39;first commit&#39;</span> <span class="o">&amp;&amp;</span> git push --all
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#make publish</span>
+make github
+</pre></div>
+
+
+<p>The blog can be viewed here: https://sophia-li-he.github.io</p>
+<p><strong>Reference:</strong>
+1. https://rsip22.github.io/blog/create-a-blog-with-pelican-and-github-pages.html
+2. https://fedoramagazine.org/make-github-pages-blog-with-pelican/
+3. https://opensource.com/article/19/1/getting-started-pelican
+4. http://docs.getpelican.com/en/stable/publish.html
+5. https://blog.udacity.com/2016/02/how-to-build-a-data-analysis-portfolio-that-will-get-you-hired.html</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://sophia-li-he.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

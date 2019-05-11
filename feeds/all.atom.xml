@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sophia He's Data Blog</title><link href="https://sophia-li-he.github.io/" rel="alternate"></link><link href="https://sophia-li-he.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sophia-li-he.github.io/</id><updated>2019-05-07T10:20:00-04:00</updated><entry><title>Data Science Project Cheat Sheet</title><link href="https://sophia-li-he.github.io/data-science-project-cheat-sheet.html" rel="alternate"></link><published>2019-05-07T10:20:00-04:00</published><updated>2019-05-07T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:sophia-li-he.github.io,2019-05-07:/data-science-project-cheat-sheet.html</id><summary type="html">&lt;h2&gt;Pre-processing&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sophia He's Data Blog</title><link href="https://sophia-li-he.github.io/" rel="alternate"></link><link href="https://sophia-li-he.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sophia-li-he.github.io/</id><updated>2019-05-10T10:20:00-04:00</updated><entry><title>Set up a blog in Pelican</title><link href="https://sophia-li-he.github.io/set-up-a-blog-in-pelican.html" rel="alternate"></link><published>2019-05-10T10:20:00-04:00</published><updated>2019-05-10T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:sophia-li-he.github.io,2019-05-10:/set-up-a-blog-in-pelican.html</id><summary type="html">&lt;h1&gt;Set up a blog in Pelican&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; activate pyspark_env
+pip install pelican markdown
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create a new github repo with repo name as sophia-li-he.github.io
+Change directory to the folder where you want to save your blog&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone https://github.com/sophia-li-he/sophia-li-he.github.io.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Change to the …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Set up a blog in Pelican&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; activate pyspark_env
+pip install pelican markdown
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create a new github repo with repo name as sophia-li-he.github.io
+Change directory to the folder where you want to save your blog&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone https://github.com/sophia-li-he/sophia-li-he.github.io.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Change to the new directory&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; sophia-li-he.github.io
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Use Pelican quickstart&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican-quickstart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Answer below questions&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Where do you want to create your new web site? [.] 
+What will be the title of this web site? Sophia He's Data Blog
+Who will be the author of this web site? Sophia He
+What will be the default language of this web site? [en] 
+Do you want to specify a URL prefix? e.g., https://example.com   (Y/n) Y
+https://sophia-li-he.github.io
+Do you want to enable article pagination? (Y/n) n
+What is your time zone? [Europe/Paris] America/New_York
+Do you want to generate a tasks.py/Makefile to automate generation and publishing? (Y/n) Y
+Do you want to upload your website using FTP? (y/N) N
+Do you want to upload your website using SSH? (y/N) N
+Do you want to upload your website using Dropbox? (y/N) N
+Do you want to upload your website using S3? (y/N) N
+Do you want to upload your website using Rackspace Cloud Files? (y/N) N
+Do you want to upload your website using GitHub Pages? (y/N) y
+Is this your personal page (username.github.io)? (y/N) y
+Done. Your new project is available at /Users/sophiahe/Sophia/700_Tech/780_data_blog/sophia-li-he.github.io&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Generate content of the blog&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican content
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Preview the blog at http://localhost:8000/&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican -l
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Push your changes to github&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git add -A &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -a -m &lt;span class="s1"&gt;&amp;#39;first commit&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push --all
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#make publish&lt;/span&gt;
+make github
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The blog can be viewed here: https://sophia-li-he.github.io&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Reference:&lt;/strong&gt;
+1. https://rsip22.github.io/blog/create-a-blog-with-pelican-and-github-pages.html
+2. https://fedoramagazine.org/make-github-pages-blog-with-pelican/
+3. https://opensource.com/article/19/1/getting-started-pelican
+4. http://docs.getpelican.com/en/stable/publish.html
+5. https://blog.udacity.com/2016/02/how-to-build-a-data-analysis-portfolio-that-will-get-you-hired.html&lt;/p&gt;</content></entry><entry><title>Data Science Project Cheat Sheet</title><link href="https://sophia-li-he.github.io/data-science-project-cheat-sheet.html" rel="alternate"></link><published>2019-05-07T10:20:00-04:00</published><updated>2019-05-07T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:sophia-li-he.github.io,2019-05-07:/data-science-project-cheat-sheet.html</id><summary type="html">&lt;h2&gt;Pre-processing&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Drop na in one column: drop all the rows if columns 'Salary' is null.&lt;/li&gt;
 &lt;/ul&gt;
