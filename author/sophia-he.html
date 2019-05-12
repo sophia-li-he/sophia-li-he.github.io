@@ -12,12 +12,41 @@
                 <h1><a href="/">Sophia He's Data Blog </a></h1>
                 <nav><ul>
                     <li><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/statistics.html">Statistics</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/set-up-a-blog-in-pelican.html">Set up a blog in Pelican</a></h1>
+                    <h1 class="entry-title"><a href="/statistical-inference.html">Statistical Inference</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-05-11T10:20:00-04:00">
+                Published: Sat 11 May 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/sophia-he.html">Sophia He</a>
+        </address>
+<p>In <a href="/category/statistics.html">Statistics</a>.</p>
+
+</footer><!-- /.post-info --><p>The idea behind statistical inference is to understand samples from a hypothetical population where the null hypothesis is true. 
+For example, from East and West Coasts, where cola preference is the same. The statistic is the <strong>difference in the proportion</strong> of West Coast people who prefer cola as compared with the proportion of East Coast people who prefer cola. The difference in the sample proportion changes within each sample.
+We can build a distribution of <strong>differences in proportions</strong> assuming the null hypothesis, that there is no link between location and soda preference, is true. That is, the null samples consist of randomly shuffled soda variables so that the samples don't have any dependency between location and soda preference.
+![Write here a good description for people who can't see the image]
+({filename}/images/1.png)</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/set-up-a-blog-in-pelican.html" rel="bookmark"
+                           title="Permalink to Set up a blog in Pelican">Set up a blog in Pelican</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-05-10T10:20:00-04:00">
                 Published: Fri 10 May 2019
@@ -28,7 +57,7 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 
-</footer><!-- /.post-info --><h1>Set up a blog in Pelican</h1>
+</footer><!-- /.post-info -->                <h1>Set up a blog in Pelican</h1>
 <div class="highlight"><pre><span></span><span class="nb">source</span> activate pyspark_env
 pip install pelican markdown
 </pre></div>
@@ -40,73 +69,10 @@ Change directory to the folder where you want to save your blog</p>
 </pre></div>
 
 
-<p>Change to the new directory</p>
-<div class="highlight"><pre><span></span><span class="nb">cd</span> sophia-li-he.github.io
-</pre></div>
-
-
-<p>Use Pelican quickstart</p>
-<div class="highlight"><pre><span></span>pelican-quickstart
-</pre></div>
-
-
-<p>Answer below questions</p>
-<blockquote>
-<p>Where do you want to create your new web site? [.] ./
-What will be the title of this web site? Sophia He's Data Blog
-Who will be the author of this web site? Sophia He
-What will be the default language of this web site? [en] 
-Do you want to specify a URL prefix? e.g., https://example.com   (Y/n) n
-Do you want to enable article pagination? (Y/n) n
-What is your time zone? [Europe/Paris] America/New_York
-Do you want to generate a tasks.py/Makefile to automate generation and publishing? (Y/n) Y
-Do you want to upload your website using FTP? (y/N) N
-Do you want to upload your website using SSH? (y/N) N
-Do you want to upload your website using Dropbox? (y/N) N
-Do you want to upload your website using S3? (y/N) N
-Do you want to upload your website using Rackspace Cloud Files? (y/N) N
-Do you want to upload your website using GitHub Pages? (y/N) y
-Is this your personal page (username.github.io)? (y/N) y
-Done. Your new project is available at /Users/sophiahe/Sophia/700_Tech/780_data_blog/sophia-li-he.github.io</p>
-</blockquote>
-<p>Generate content of the blog</p>
-<div class="highlight"><pre><span></span>pelican content
-</pre></div>
-
-
-<p>Preview the blog at http://localhost:8000/</p>
-<div class="highlight"><pre><span></span>pelican -l
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>make github
-</pre></div>
-
-
-<p>Push your changes to github</p>
-<div class="highlight"><pre><span></span>$ git add -A <span class="o">&amp;&amp;</span> git commit -a -m <span class="s1">&#39;first commit&#39;</span> <span class="o">&amp;&amp;</span> git push --all
-</pre></div>
-
-
-<p>The blog can be viewed here: https://sophia-li-he.github.io</p>
-<p>After adding new contents to the blog</p>
-<div class="highlight"><pre><span></span>pelican content
-pelican -l
-make github
-</pre></div>
-
-
-<p><strong>Reference:</strong>
-1. https://rsip22.github.io/blog/create-a-blog-with-pelican-and-github-pages.html
-2. https://fedoramagazine.org/make-github-pages-blog-with-pelican/
-3. https://opensource.com/article/19/1/getting-started-pelican
-4. http://docs.getpelican.com/en/stable/publish.html
-5. https://blog.udacity.com/2016/02/how-to-build-a-data-analysis-portfolio-that-will-get-you-hired.html</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Change to the …</p>
+                <a class="readmore" href="/set-up-a-blog-in-pelican.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -125,25 +91,22 @@ make github
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 
-</footer><!-- /.post-info -->                <h2>Pre-processing</h2>
-<ul>
-<li>Drop na in one column: drop all the rows if columns 'Salary' is null.</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="n">drop_sal_df</span> <span class="o">=</span> <span class="n">num_vars</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">])</span>
-</pre></div>
+</footer><!-- /.post-info -->                <h2>Data Profile</h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">singlevalue</span><span class="p">(</span><span class="n">my_series</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    input: pd.series</span>
+<span class="sd">    output: the number of single values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="n">my_series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">value</span>
 
-
-<ul>
-<li>Fill all missing values with the mean of the column</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="n">fill_mean</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-<span class="n">fill_df</span> <span class="o">=</span> <span class="n">drop_sal_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fill_mean</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-
-<h3>Categorical</h3>
-<ul>
-<li>Create a dummy variable with na …</li></ul>
+<span class="k">def</span> <span class="nf">df_explore</span><span class="p">(</span><span class="n">data_explore</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    input: pandas dataframe</span>
+<span class="sd">    output: </span>
+<span class="sd">    1. the shape of the data frame</span>
+<span class="sd">    2. the number of unique value in each column</span>
+<span class="sd">    3. the percentage of …</span></pre></div>
                 <a class="readmore" href="/data-science-project-cheat-sheet.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>

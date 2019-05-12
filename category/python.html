@@ -12,6 +12,7 @@
                 <h1><a href="/">Sophia He's Data Blog </a></h1>
                 <nav><ul>
                     <li class="active"><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/statistics.html">Statistics</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
@@ -125,25 +126,22 @@ make github
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 
-</footer><!-- /.post-info -->                <h2>Pre-processing</h2>
-<ul>
-<li>Drop na in one column: drop all the rows if columns 'Salary' is null.</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="n">drop_sal_df</span> <span class="o">=</span> <span class="n">num_vars</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">])</span>
-</pre></div>
+</footer><!-- /.post-info -->                <h2>Data Profile</h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">singlevalue</span><span class="p">(</span><span class="n">my_series</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    input: pd.series</span>
+<span class="sd">    output: the number of single values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="n">my_series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">value</span>
 
-
-<ul>
-<li>Fill all missing values with the mean of the column</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="n">fill_mean</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-<span class="n">fill_df</span> <span class="o">=</span> <span class="n">drop_sal_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fill_mean</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-
-<h3>Categorical</h3>
-<ul>
-<li>Create a dummy variable with na …</li></ul>
+<span class="k">def</span> <span class="nf">df_explore</span><span class="p">(</span><span class="n">data_explore</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    input: pandas dataframe</span>
+<span class="sd">    output: </span>
+<span class="sd">    1. the shape of the data frame</span>
+<span class="sd">    2. the number of unique value in each column</span>
+<span class="sd">    3. the percentage of …</span></pre></div>
                 <a class="readmore" href="/data-science-project-cheat-sheet.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
