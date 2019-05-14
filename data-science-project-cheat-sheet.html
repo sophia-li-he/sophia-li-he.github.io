@@ -34,17 +34,18 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 
-</footer><!-- /.post-info -->      <h2>Data Profile</h2>
+</footer><!-- /.post-info -->      <h1>Data Profile</h1>
+<h2>Summary info</h2>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">singlevalue</span><span class="p">(</span><span class="n">my_series</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">"""</span>
 <span class="sd">    input: pd.series</span>
 <span class="sd">    output: the number of single values</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="n">my_series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">value</span>
 
 <span class="k">def</span> <span class="nf">df_explore</span><span class="p">(</span><span class="n">data_explore</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">"""</span>
 <span class="sd">    input: pandas dataframe</span>
 <span class="sd">    output: </span>
 <span class="sd">    1. the shape of the data frame</span>
@@ -52,54 +53,79 @@
 <span class="sd">    3. the percentage of null value in each column</span>
 <span class="sd">    4. the number of single value in each column</span>
 <span class="sd">    5. the data type of each column</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;1. The shape of the data is &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_explore</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="sd">    """</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s2">"1. The shape of the data is "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_explore</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
     <span class="n">data_explore_unique</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_explore</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="n">data_explore_unique</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;nunique&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">data_explore_unique</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'nunique'</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">data_explore_null</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_explore</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">data_explore</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
-    <span class="n">data_explore_null</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;null%&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">data_explore_null</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'null%'</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">data_explore_single</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_explore</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">singlevalue</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="n">data_explore_single</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;nsingle&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">data_explore_single</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'nsingle'</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">data_explore_types</span> <span class="o">=</span> <span class="n">data_explore</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-    <span class="n">data_explore_types</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;dtypes&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">data_explore_result</span> <span class="o">=</span> <span class="n">data_explore_unique</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_explore_null</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span><span class="o">.</span>\
-    <span class="n">join</span><span class="p">(</span><span class="n">data_explore_single</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_explore_types</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+    <span class="n">data_explore_types</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'dtypes'</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">data_explore_result</span> <span class="o">=</span> <span class="n">data_explore_unique</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_explore_null</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span><span class="o">.</span>\
+    <span class="n">join</span><span class="p">(</span><span class="n">data_explore_single</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_explore_types</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">'outer'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data_explore_result</span>
 </pre></div>
+<h2>Missing values</h2>
+<div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span><span class="n">yticklabels</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis'</span><span class="p">)</span>
+</pre></div>
+<h2>Continous Variable</h2>
+<h3>Empirical cumulative distribution functions (ECDF)</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">"""Compute ECDF for a one-dimensional array of measurements."""</span>
+    <span class="c1"># Number of data points: n</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
+    <span class="c1"># x-data for the ECDF: x</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-<h2>Pre-processing</h2>
+    <span class="c1"># y-data for the ECDF: y</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1"># Compute ECDFs</span>
+<span class="n">x_set</span><span class="p">,</span> <span class="n">y_set</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">setosa_petal_length</span><span class="p">)</span>
+<span class="n">x_vers</span><span class="p">,</span> <span class="n">y_vers</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">)</span>
+<span class="n">x_virg</span><span class="p">,</span> <span class="n">y_virg</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">virginica_petal_length</span><span class="p">)</span>
+
+<span class="c1"># Plot all ECDFs on the same plot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_set</span><span class="p">,</span> <span class="n">y_set</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vers</span><span class="p">,</span> <span class="n">y_vers</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_virg</span><span class="p">,</span> <span class="n">y_virg</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+<span class="c1"># Annotate the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="s1">'setosa'</span><span class="p">,</span> <span class="s1">'versicolor'</span><span class="p">,</span> <span class="s1">'virginica'</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'lower right'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'petal length (cm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ECDF'</span><span class="p">)</span>
+</pre></div>
+<h1>Pre-processing</h1>
 <ul>
 <li>Drop na in one column: drop all the rows if columns 'Salary' is null.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">drop_sal_df</span> <span class="o">=</span> <span class="n">num_vars</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><span class="n">drop_sal_df</span> <span class="o">=</span> <span class="n">num_vars</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Salary'</span><span class="p">])</span>
 </pre></div>
-
-
 <ul>
 <li>Fill all missing values with the mean of the column</li>
 </ul>
 <div class="highlight"><pre><span></span><span class="n">fill_mean</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 <span class="n">fill_df</span> <span class="o">=</span> <span class="n">drop_sal_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fill_mean</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
-
-
 <h3>Categorical</h3>
 <ul>
 <li>Create a dummy variable with na as a new column</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">dummy_cols_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">dummy_var_df</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">],</span> <span class="n">dummy_na</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">dummy_cols_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">dummy_var_df</span><span class="p">[</span><span class="s1">'col1'</span><span class="p">],</span> <span class="n">dummy_na</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
 </pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="n">cat_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">cat_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">'object'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="c1">#Create a copy of the dataframe</span>
 <span class="n">cat_df_copy</span> <span class="o">=</span> <span class="n">cat_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="c1">#Pull a list of the column names of the categorical variables</span>
 <span class="n">cat_cols_lst</span> <span class="o">=</span> <span class="n">cat_df</span><span class="o">.</span><span class="n">columns</span>
 
 <span class="k">def</span> <span class="nf">create_dummy_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="n">dummy_na</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">"""</span>
 <span class="sd">    INPUT:</span>
 <span class="sd">    df - pandas dataframe with categorical variables you want to dummy</span>
 <span class="sd">    cat_cols - list of strings that are associated with names of the categorical columns</span>
@@ -112,21 +138,19 @@
 <span class="sd">    3. dummy columns for each of the categorical columns in cat_cols</span>
 <span class="sd">    4. if dummy_na is True - it also contains dummy columns for the NaN values</span>
 <span class="sd">    5. Use a prefix of the column name with an underscore (_) for separating </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">],</span> <span class="n">prefix</span> <span class="o">=</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="n">prefix_sep</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">dummy_na</span> <span class="o">=</span> <span class="n">dummy_na</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">cat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">],</span> <span class="n">prefix</span> <span class="o">=</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="n">prefix_sep</span><span class="o">=</span><span class="s1">'_'</span><span class="p">,</span> <span class="n">dummy_na</span> <span class="o">=</span> <span class="n">dummy_na</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">cat_df</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">left_index</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">right_index</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">cat_df</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">'inner'</span><span class="p">,</span> <span class="n">left_index</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">right_index</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">df_copy</span>
 </pre></div>
-
-
 <h2>Linear Regression</h2>
 <ul>
 <li>Numeric variables</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">fill_df</span><span class="p">[[</span><span class="s1">&#39;CareerSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;HoursPerWeek&#39;</span><span class="p">,</span> <span class="s1">&#39;JobSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;StackOverflowSatisfaction&#39;</span><span class="p">]]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">fill_df</span><span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">fill_df</span><span class="p">[[</span><span class="s1">'CareerSatisfaction'</span><span class="p">,</span> <span class="s1">'HoursPerWeek'</span><span class="p">,</span> <span class="s1">'JobSatisfaction'</span><span class="p">,</span> <span class="s1">'StackOverflowSatisfaction'</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">fill_df</span><span class="p">[</span><span class="s1">'Salary'</span><span class="p">]</span>
 
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="o">.</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span> 
 
@@ -138,7 +162,7 @@
 <span class="n">rsquared_score</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_preds</span><span class="p">)</span> <span class="c1">#r2_score</span>
 <span class="n">length_y_test</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span> <span class="c1">#num in y_test</span>
 
-<span class="s2">&quot;The r-squared score for your model was {} on {} values.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rsquared_score</span><span class="p">,</span> <span class="n">length_y_test</span><span class="p">)</span>
+<span class="s2">"The r-squared score for your model was {} on {} values."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rsquared_score</span><span class="p">,</span> <span class="n">length_y_test</span><span class="p">)</span>
 </pre></div>
     </div><!-- /.entry-content -->
 
@@ -148,10 +172,7 @@
                 <div class="blogroll">
                         <h2>links</h2>
                         <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+                            <li><a href="https://github.com/sophia-li-he">Github</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -159,8 +180,7 @@
                         <ul>
                             <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
+                            <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->

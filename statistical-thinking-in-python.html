@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Statistical Thinking in Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Sophia He's Data Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/python.html">Python</a></li>
+                    <li class="active"><a href="/category/statistics.html">Statistics</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/statistical-thinking-in-python.html" rel="bookmark"
+           title="Permalink to Statistical Thinking in Python">Statistical Thinking in Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-05-11T10:20:00-04:00">
+                Published: Sat 11 May 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/sophia-he.html">Sophia He</a>
+        </address>
+<p>In <a href="/category/statistics.html">Statistics</a>.</p>
+
+</footer><!-- /.post-info -->      <h1>Graphical exploratory data analysis</h1>
+<h2>Histogram</h2>
+<div class="highlight"><pre><span></span><span class="c1"># Import plotting modules</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+
+<span class="c1"># Set default Seaborn style</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+<span class="c1"># Compute number of data points: n_data</span>
+<span class="n">n_data</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">)</span>
+
+<span class="c1"># Number of bins is the square root of number of data points: n_bins</span>
+<span class="n">n_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n_data</span><span class="p">)</span>
+
+<span class="c1"># Convert number of bins to integer: n_bins</span>
+<span class="n">n_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+
+<span class="c1"># Plot histogram of versicolor petal lengths</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">n_bins</span><span class="p">)</span>
+
+<span class="c1"># Label axes</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'petal length (cm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'count'</span><span class="p">)</span>
+
+<span class="c1"># Show histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<h2>Bee swarm plot</h2>
+<div class="highlight"><pre><span></span><span class="c1"># Create bee swarm plot with Seaborn's default settings</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'species'</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">'petal length (cm)'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Label the axes</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'species'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'petal length (cm)'</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="Bee swarm plot" src="images/15576913498809.jpg" style="width: 546px; height: auto; max-width: 100%;"/></p>
+<h2>Empirical cumulative distribution functions</h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">"""Compute ECDF for a one-dimensional array of measurements."""</span>
+    <span class="c1"># Number of data points: n</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># x-data for the ECDF: x</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># y-data for the ECDF: y</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1"># Compute ECDFs</span>
+<span class="n">x_set</span><span class="p">,</span> <span class="n">y_set</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">setosa_petal_length</span><span class="p">)</span>
+<span class="n">x_vers</span><span class="p">,</span> <span class="n">y_vers</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">)</span>
+<span class="n">x_virg</span><span class="p">,</span> <span class="n">y_virg</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">virginica_petal_length</span><span class="p">)</span>
+
+<span class="c1"># Plot all ECDFs on the same plot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_set</span><span class="p">,</span> <span class="n">y_set</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vers</span><span class="p">,</span> <span class="n">y_vers</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_virg</span><span class="p">,</span> <span class="n">y_virg</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+<span class="c1"># Annotate the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="s1">'setosa'</span><span class="p">,</span> <span class="s1">'versicolor'</span><span class="p">,</span> <span class="s1">'virginica'</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'lower right'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'petal length (cm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ECDF'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="images/15576935812373.jpg" style="width: 551px; height: auto; max-width: 100%;"/></p>
+<p>Another example: the dataset contains the percentage of vote for Obama for each county.
+<img alt="" src="images/15576939387973.jpg" style="width: 675px; height: auto; max-width: 100%;"/>
+Plot percentile on ECDF</p>
+<div class="highlight"><pre><span></span><span class="c1"># Specify array of percentiles: percentiles</span>
+<span class="n">percentiles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">])</span>
+
+<span class="c1"># Compute percentiles: ptiles_vers</span>
+<span class="n">ptiles_vers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">,</span> <span class="n">percentiles</span><span class="p">)</span>
+
+<span class="c1"># Plot the ECDF</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vers</span><span class="p">,</span> <span class="n">y_vers</span><span class="p">,</span> <span class="s1">'.'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'petal length (cm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ECDF'</span><span class="p">)</span>
+
+<span class="c1"># Overlay percentiles as red diamonds.</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ptiles_vers</span><span class="p">,</span> <span class="n">percentiles</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'D'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span>
+         <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15576981379817.jpg" style="width: 547px; height: auto; max-width: 100%;"/></p>
+<h1>Quantitative exploratory data analysis</h1>
+<h2>Covariance and Correlation</h2>
+<div class="highlight"><pre><span></span><span class="c1"># Make a scatter plot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">,</span> <span class="n">versicolor_petal_width</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+
+<span class="c1"># Label the axes</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'versicolor petal length (cm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'versicolor petal width (cm)'</span><span class="p">)</span>
+
+<span class="c1"># Show the result</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15577997569705.jpg" style="width: 557px; height: auto; max-width: 100%;"/></p>
+<p>Pearson correlation coefficient: It is a comparison of the variability in the data due to codependence(the covariance) to the variability inherent to each variable independently (their standard deviations).</p>
+<h1>Probabilistic logic and statistical inference</h1>
+<p>Given a set of data, you describe probabilistically what you might expect if you collect the same data again and again and again.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://github.com/sophia-li-he">Github</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
