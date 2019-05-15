@@ -28,7 +28,8 @@ homes &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; NHANES &lt;span class="o"&gt;
   group_by&lt;span class="p"&gt;(&lt;/span&gt;Gender&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
   summarize&lt;span class="p"&gt;(&lt;/span&gt;prop_own &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;HomeOwn &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'Own'&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
   summarize&lt;span class="p"&gt;(&lt;/span&gt;diff_orig &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;prop_own&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Statistical Thinking in Python</title><link href="/statistical-thinking-in-python.html" rel="alternate"></link><published>2019-05-11T10:20:00-04:00</published><updated>2019-05-11T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-11:/statistical-thinking-in-python.html</id><summary type="html">&lt;h1&gt;Graphical exploratory data analysis&lt;/h1&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Statistical Thinking in Python</title><link href="/statistical-thinking-in-python.html" rel="alternate"></link><published>2019-05-11T10:20:00-04:00</published><updated>2019-05-11T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-11:/statistical-thinking-in-python.html</id><summary type="html">&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1&gt;Graphical exploratory data analysis&lt;/h1&gt;
 &lt;h2&gt;Histogram&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Import plotting modules&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -41,9 +42,8 @@ homes &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; NHANES &lt;span class="o"&gt;
 &lt;span class="n"&gt;n_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;versicolor_petal_length&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="c1"&gt;# Number of bins is the square root of number of data points: n_bins&lt;/span&gt;
-&lt;span class="n"&gt;n_bins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-&lt;span class="c1"&gt;# Convert …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;Graphical exploratory data analysis&lt;/h1&gt;
+&lt;span class="n"&gt;n_bins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_data …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1&gt;Graphical exploratory data analysis&lt;/h1&gt;
 &lt;h2&gt;Histogram&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Import plotting modules&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -150,5 +150,71 @@ Plot percentile on ECDF&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img alt="" src="images/15577997569705.jpg" style="width: 557px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
 &lt;p&gt;Pearson correlation coefficient: It is a comparison of the variability in the data due to codependence(the covariance) to the variability inherent to each variable independently (their standard deviations).&lt;/p&gt;
-&lt;h1&gt;Probabilistic logic and statistical inference&lt;/h1&gt;
-&lt;p&gt;Given a set of data, you describe probabilistically what you might expect if you collect the same data again and again and again.&lt;/p&gt;</content></entry></feed>
+&lt;h1&gt;Discrete variables&lt;/h1&gt;
+&lt;p&gt;Given a set of data, you describe probabilistically what you might expect if you collect the same data again and again and again.&lt;/p&gt;
+&lt;h2&gt;Bernoulli trial and binomial distribution&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;perform_bernoulli_trials&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;"""Perform n Bernoulli trials with success probability p&lt;/span&gt;
+&lt;span class="sd"&gt;    and return number of successes."""&lt;/span&gt;
+    &lt;span class="c1"&gt;# Initialize number of successes: n_success&lt;/span&gt;
+    &lt;span class="n"&gt;n_success&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# Perform trials&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="c1"&gt;# Choose random number between zero and one: random_number&lt;/span&gt;
+        &lt;span class="n"&gt;random_number&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+
+        &lt;span class="c1"&gt;# If less than p, it's a success so add one to n_success&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;random_number&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;n_success&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;n_success&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Try 1,000 times of 100 Bernoulli trial and save the number of defaults in to a list&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Initialize the number of defaults: n_defaults&lt;/span&gt;
+&lt;span class="n"&gt;n_defaults&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Compute the number of defaults&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;n_defaults&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;perform_bernoulli_trials&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Compute the probability of n_default &amp;gt;= 10&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Compute the number of 100-loan simulations with 10 or more defaults: n_lose_money&lt;/span&gt;
+&lt;span class="n"&gt;n_lose_money&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_defaults&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Compute and print probability of losing money&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Probability of losing money ='&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_lose_money&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_defaults&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Output: Probability of losing money = 0.022&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Probability mass function (PMF): The set of probabilities of discrete outcomes&lt;/p&gt;
+&lt;p&gt;Distribution: a mathematical description of outcomes &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Binomial distribution: The number of r of successes in n Bernoulli trials with probability p of success, is Binomially distributed.&lt;/p&gt;
+&lt;p&gt;E.g. The number r of heads in 4 coin flips with probability 0.5 of heads, is Binomially distributed.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Conduct the 4 coin flips for 1000 times&lt;/span&gt;
+&lt;span class="n"&gt;samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;binomial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Plot the Binomial PMF&lt;/h3&gt;
+&lt;p&gt;Plot the PMF of the Binomial distribution as a histogram. The trick is setting up the edges of the bins to pass to &lt;code&gt;plt.hist()&lt;/code&gt; via the &lt;code&gt;bins&lt;/code&gt; keyword argument. We want the bins centered on the integers. So, the edges of the bins should be &lt;code&gt;-0.5, 0.5, 1.5, 2.5, ...&lt;/code&gt;up to &lt;code&gt;max(n_defaults) + 1.5&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Compute bin edges: bins&lt;/span&gt;
+&lt;span class="n"&gt;bins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_defaults&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Generate histogram&lt;/span&gt;
+&lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_defaults&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bins&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Label axes&lt;/span&gt;
+&lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"number of defaults"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"probability"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Show the plot&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt="" src="images/15578870082606.jpg" style="width: 556px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
+&lt;h2&gt;Poisson distribution&lt;/h2&gt;
+&lt;p&gt;Poisson event: the time of the next event is completely independent of when the previous event happened.&lt;/p&gt;
+&lt;p&gt;The parameter for poisson distribution: the average number of arrivals in a given length of time&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Story&lt;/strong&gt;: The number r of hits on a website in one hour with an average hit rage of 6 hits per hour is Poisson distributed.&lt;/p&gt;
+&lt;h2&gt;Relationship between Binomial and Poisson distribution&lt;/h2&gt;
+&lt;p&gt;Say we do a Bernoulli trial every minute for an hour, each with a success probability of 0.1. We would do 60 trials, and the number of successes is Binomially distributed, and we would expect to get about 6 successes. This is just like the Poisson story we discussed in the video, where we get on average 6 hits on a website per hour. So, the Poisson distribution with arrival rate equal to &lt;code&gt;np&lt;/code&gt; approximates a Binomial distribution for &lt;code&gt;n&lt;/code&gt; Bernoulli trials with probability &lt;code&gt;p&lt;/code&gt; of success (with n large and p small). Importantly, the Poisson distribution is often simpler to work with because it has only one parameter instead of two for the Binomial distribution. &lt;/p&gt;</content></entry></feed>

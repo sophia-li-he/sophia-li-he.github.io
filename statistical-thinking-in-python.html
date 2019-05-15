@@ -34,7 +34,8 @@
         </address>
 <p>In <a href="/category/statistics.html">Statistics</a>.</p>
 
-</footer><!-- /.post-info -->      <h1>Graphical exploratory data analysis</h1>
+</footer><!-- /.post-info -->      <p>[TOC]</p>
+<h1>Graphical exploratory data analysis</h1>
 <h2>Histogram</h2>
 <div class="highlight"><pre><span></span><span class="c1"># Import plotting modules</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -141,8 +142,74 @@ Plot percentile on ECDF</p>
 </pre></div>
 <p><img alt="" src="images/15577997569705.jpg" style="width: 557px; height: auto; max-width: 100%;"/></p>
 <p>Pearson correlation coefficient: It is a comparison of the variability in the data due to codependence(the covariance) to the variability inherent to each variable independently (their standard deviations).</p>
-<h1>Probabilistic logic and statistical inference</h1>
+<h1>Discrete variables</h1>
 <p>Given a set of data, you describe probabilistically what you might expect if you collect the same data again and again and again.</p>
+<h2>Bernoulli trial and binomial distribution</h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">perform_bernoulli_trials</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">"""Perform n Bernoulli trials with success probability p</span>
+<span class="sd">    and return number of successes."""</span>
+    <span class="c1"># Initialize number of successes: n_success</span>
+    <span class="n">n_success</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Perform trials</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Choose random number between zero and one: random_number</span>
+        <span class="n">random_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+
+
+        <span class="c1"># If less than p, it's a success so add one to n_success</span>
+        <span class="k">if</span> <span class="n">random_number</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">n_success</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">n_success</span>
+</pre></div>
+<p>Try 1,000 times of 100 Bernoulli trial and save the number of defaults in to a list</p>
+<div class="highlight"><pre><span></span><span class="c1"># Initialize the number of defaults: n_defaults</span>
+<span class="n">n_defaults</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>
+
+<span class="c1"># Compute the number of defaults</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">n_defaults</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">perform_bernoulli_trials</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+<p>Compute the probability of n_default &gt;= 10</p>
+<div class="highlight"><pre><span></span><span class="c1"># Compute the number of 100-loan simulations with 10 or more defaults: n_lose_money</span>
+<span class="n">n_lose_money</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n_defaults</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Compute and print probability of losing money</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Probability of losing money ='</span><span class="p">,</span> <span class="n">n_lose_money</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_defaults</span><span class="p">))</span>
+</pre></div>
+<p>Output: Probability of losing money = 0.022</p>
+<blockquote>
+<p>Probability mass function (PMF): The set of probabilities of discrete outcomes</p>
+<p>Distribution: a mathematical description of outcomes </p>
+</blockquote>
+<p>Binomial distribution: The number of r of successes in n Bernoulli trials with probability p of success, is Binomially distributed.</p>
+<p>E.g. The number r of heads in 4 coin flips with probability 0.5 of heads, is Binomially distributed.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Conduct the 4 coin flips for 1000 times</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+<h3>Plot the Binomial PMF</h3>
+<p>Plot the PMF of the Binomial distribution as a histogram. The trick is setting up the edges of the bins to pass to <code>plt.hist()</code> via the <code>bins</code> keyword argument. We want the bins centered on the integers. So, the edges of the bins should be <code>-0.5, 0.5, 1.5, 2.5, ...</code>up to <code>max(n_defaults) + 1.5</code></p>
+<div class="highlight"><pre><span></span><span class="c1"># Compute bin edges: bins</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_defaults</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
+
+<span class="c1"># Generate histogram</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">n_defaults</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Label axes</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"number of defaults"</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"probability"</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15578870082606.jpg" style="width: 556px; height: auto; max-width: 100%;"/></p>
+<h2>Poisson distribution</h2>
+<p>Poisson event: the time of the next event is completely independent of when the previous event happened.</p>
+<p>The parameter for poisson distribution: the average number of arrivals in a given length of time</p>
+<p><strong>Story</strong>: The number r of hits on a website in one hour with an average hit rage of 6 hits per hour is Poisson distributed.</p>
+<h2>Relationship between Binomial and Poisson distribution</h2>
+<p>Say we do a Bernoulli trial every minute for an hour, each with a success probability of 0.1. We would do 60 trials, and the number of successes is Binomially distributed, and we would expect to get about 6 successes. This is just like the Poisson story we discussed in the video, where we get on average 6 hits on a website per hour. So, the Poisson distribution with arrival rate equal to <code>np</code> approximates a Binomial distribution for <code>n</code> Bernoulli trials with probability <code>p</code> of success (with n large and p small). Importantly, the Poisson distribution is often simpler to work with because it has only one parameter instead of two for the Binomial distribution. </p>
     </div><!-- /.entry-content -->
 
   </article>
