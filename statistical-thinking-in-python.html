@@ -1,40 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
+
         <title>Statistical Thinking in Python</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
-        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Atom Feed" />
+        <meta charset="utf-8" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Full Atom Feed" />
+        <link href="/feeds/statistics.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/pygment.css" />
+
+        <script src="/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
 </head>
 
 <body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">Sophia He's Data Blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/python.html">Python</a></li>
-                    <li class="active"><a href="/category/statistics.html">Statistics</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="/">Sophia He's Data Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="/">Home</a></li>
+
+
+              </ul>
+            </div>
+
 <section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/statistical-thinking-in-python.html" rel="bookmark"
-           title="Permalink to Statistical Thinking in Python">Statistical Thinking in Python</a></h1>
-    </header>
 
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-05-11T10:20:00-04:00">
-                Published: Sat 11 May 2019
-        </abbr>
+   <div class="row">
+        <div class="eleven columns">
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sophia-he.html">Sophia He</a>
-        </address>
-<p>In <a href="/category/statistics.html">Statistics</a>.</p>
 
-</footer><!-- /.post-info -->      <p>[TOC]</p>
+            <header>
+              <h2 class="entry-title">
+                <a href="/statistical-thinking-in-python.html" rel="bookmark"
+                   title="Permalink to Statistical Thinking in Python">Statistical Thinking in Python</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2019-05-11T10:20:00-04:00">
+                Sat 11 May 2019
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="/author/sophia-he.html"> Sophia He</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>[TOC]</p>
 <h1>Graphical exploratory data analysis</h1>
 <h2>Histogram</h2>
 <div class="highlight"><pre><span></span><span class="c1"># Import plotting modules</span>
@@ -76,6 +106,7 @@
 </pre></div>
 <p><img alt="Bee swarm plot" src="images/15576913498809.jpg" style="width: 546px; height: auto; max-width: 100%;"/></p>
 <h2>Empirical cumulative distribution functions</h2>
+<p>CDF gives the probability the measure of the speed of light will be less than the value of x axis.</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="sd">"""Compute ECDF for a one-dimensional array of measurements."""</span>
     <span class="c1"># Number of data points: n</span>
@@ -210,34 +241,106 @@ Plot percentile on ECDF</p>
 <p><strong>Story</strong>: The number r of hits on a website in one hour with an average hit rage of 6 hits per hour is Poisson distributed.</p>
 <h2>Relationship between Binomial and Poisson distribution</h2>
 <p>Say we do a Bernoulli trial every minute for an hour, each with a success probability of 0.1. We would do 60 trials, and the number of successes is Binomially distributed, and we would expect to get about 6 successes. This is just like the Poisson story we discussed in the video, where we get on average 6 hits on a website per hour. So, the Poisson distribution with arrival rate equal to <code>np</code> approximates a Binomial distribution for <code>n</code> Bernoulli trials with probability <code>p</code> of success (with n large and p small). Importantly, the Poisson distribution is often simpler to work with because it has only one parameter instead of two for the Binomial distribution. </p>
-    </div><!-- /.entry-content -->
+<h1>Continuous Variables</h1>
+<h2>Probability density function (PDF)</h2>
+<blockquote>
+<p>PDF is mathematical description of the relative likelihood of observing a value of a continuous variable
+Area under the PDF gives probabilities</p>
+</blockquote>
+<p>Test if a dataset is normally distributed</p>
+<div class="highlight"><pre><span></span><span class="c1"># Compute mean and standard deviation: mu, sigma</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">belmont_no_outliers</span><span class="p">)</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">belmont_no_outliers</span><span class="p">)</span>
 
-  </article>
+
+<span class="c1"># Sample out of a normal distribution with this mu and sigma: samples</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Get the CDF of the samples and of the data</span>
+<span class="n">x_theor</span><span class="p">,</span> <span class="n">y_theor</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">belmont_no_outliers</span><span class="p">)</span>
+
+<span class="c1"># Plot the CDFs and show the plot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_theor</span><span class="p">,</span> <span class="n">y_theor</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Belmont winning time (sec.)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'CDF'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15579729421596.jpg" style="width: 523px; height: auto; max-width: 100%;"/></p>
+<h2>Exponential Distribution</h2>
+<p>The waiting time between arrivals of a Poisson process is Exponentially distributed. It has a single parameter, the mean waiting time.
+<img alt="" src="images/15579737889594.jpg" style="width: 375px; height: auto; max-width: 100%;"/></p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+  <h4>Pages</h4>
+
+  <ul>
+
+  
+  <h4>Categories</h4>
+  <ul class="blank">
+    <li><a href="/category/python.html">Python</a></li>
+    <li><a href="/category/statistics.html">Statistics</a></li>
+  </ul>
+
+
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
 </section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="https://github.com/sophia-li-he">Github</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+       </div><!-- /.row -->
+    </div><!-- /.container -->
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+       <div class="container.nopad bg">
 
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="/theme/js/libs/gumby.min.js"></script>
+  <script src="/theme/js/plugins.js"></script>
 </body>
 </html>
