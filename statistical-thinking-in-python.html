@@ -64,9 +64,8 @@
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
-              <p>[TOC]</p>
-<h1>Graphical exploratory data analysis</h1>
-<h2>Histogram</h2>
+              <h4>Graphical exploratory data analysis</h4>
+<h5>Histogram</h5>
 <div class="highlight"><pre><span></span><span class="c1"># Import plotting modules</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
@@ -93,7 +92,7 @@
 <span class="c1"># Show histogram</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<h2>Bee swarm plot</h2>
+<h5>Bee swarm plot</h5>
 <div class="highlight"><pre><span></span><span class="c1"># Create bee swarm plot with Seaborn's default settings</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'species'</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">'petal length (cm)'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">)</span>
 
@@ -105,7 +104,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 <p><img alt="Bee swarm plot" src="images/15576913498809.jpg" style="width: 546px; height: auto; max-width: 100%;"/></p>
-<h2>Empirical cumulative distribution functions</h2>
+<h5>Empirical cumulative distribution functions</h5>
 <p>CDF gives the probability the measure of the speed of light will be less than the value of x axis.</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="sd">"""Compute ECDF for a one-dimensional array of measurements."""</span>
@@ -158,8 +157,8 @@ Plot percentile on ECDF</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 <p><img alt="" src="images/15576981379817.jpg" style="width: 547px; height: auto; max-width: 100%;"/></p>
-<h1>Quantitative exploratory data analysis</h1>
-<h2>Covariance and Correlation</h2>
+<h4>Quantitative exploratory data analysis</h4>
+<h5>Covariance and Correlation</h5>
 <div class="highlight"><pre><span></span><span class="c1"># Make a scatter plot</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">versicolor_petal_length</span><span class="p">,</span> <span class="n">versicolor_petal_width</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
 
