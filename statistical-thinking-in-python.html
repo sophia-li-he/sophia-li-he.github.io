@@ -39,6 +39,7 @@
               <ul class="columns">
                 <li><a href="/">Home</a></li>
 
+                <li><a href="/pages/about.html">About</a></li>
 
               </ul>
             </div>
@@ -172,9 +173,9 @@ Plot percentile on ECDF</p>
 </pre></div>
 <p><img alt="" src="images/15577997569705.jpg" style="width: 557px; height: auto; max-width: 100%;"/></p>
 <p>Pearson correlation coefficient: It is a comparison of the variability in the data due to codependence(the covariance) to the variability inherent to each variable independently (their standard deviations).</p>
-<h1>Discrete variables</h1>
+<h4>Discrete variables</h4>
 <p>Given a set of data, you describe probabilistically what you might expect if you collect the same data again and again and again.</p>
-<h2>Bernoulli trial and binomial distribution</h2>
+<h5>Bernoulli trial and binomial distribution</h5>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">perform_bernoulli_trials</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
     <span class="sd">"""Perform n Bernoulli trials with success probability p</span>
 <span class="sd">    and return number of successes."""</span>
@@ -218,7 +219,7 @@ Plot percentile on ECDF</p>
 <div class="highlight"><pre><span></span><span class="c1"># Conduct the 4 coin flips for 1000 times</span>
 <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
 </pre></div>
-<h3>Plot the Binomial PMF</h3>
+<h6>Plot the Binomial PMF</h6>
 <p>Plot the PMF of the Binomial distribution as a histogram. The trick is setting up the edges of the bins to pass to <code>plt.hist()</code> via the <code>bins</code> keyword argument. We want the bins centered on the integers. So, the edges of the bins should be <code>-0.5, 0.5, 1.5, 2.5, ...</code>up to <code>max(n_defaults) + 1.5</code></p>
 <div class="highlight"><pre><span></span><span class="c1"># Compute bin edges: bins</span>
 <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_defaults</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
@@ -234,14 +235,14 @@ Plot percentile on ECDF</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 <p><img alt="" src="images/15578870082606.jpg" style="width: 556px; height: auto; max-width: 100%;"/></p>
-<h2>Poisson distribution</h2>
+<h5>Poisson distribution</h5>
 <p>Poisson event: the time of the next event is completely independent of when the previous event happened.</p>
 <p>The parameter for poisson distribution: the average number of arrivals in a given length of time</p>
 <p><strong>Story</strong>: The number r of hits on a website in one hour with an average hit rage of 6 hits per hour is Poisson distributed.</p>
-<h2>Relationship between Binomial and Poisson distribution</h2>
+<h5>Relationship between Binomial and Poisson distribution</h5>
 <p>Say we do a Bernoulli trial every minute for an hour, each with a success probability of 0.1. We would do 60 trials, and the number of successes is Binomially distributed, and we would expect to get about 6 successes. This is just like the Poisson story we discussed in the video, where we get on average 6 hits on a website per hour. So, the Poisson distribution with arrival rate equal to <code>np</code> approximates a Binomial distribution for <code>n</code> Bernoulli trials with probability <code>p</code> of success (with n large and p small). Importantly, the Poisson distribution is often simpler to work with because it has only one parameter instead of two for the Binomial distribution. </p>
-<h1>Continuous Variables</h1>
-<h2>Probability density function (PDF)</h2>
+<h4>Continuous Variables</h4>
+<h5>Probability density function (PDF)</h5>
 <blockquote>
 <p>PDF is mathematical description of the relative likelihood of observing a value of a continuous variable
 Area under the PDF gives probabilities</p>
@@ -267,9 +268,9 @@ Area under the PDF gives probabilities</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 <p><img alt="" src="images/15579729421596.jpg" style="width: 523px; height: auto; max-width: 100%;"/></p>
-<h2>Exponential Distribution</h2>
-<p>The waiting time between arrivals of a Poisson process is Exponentially distributed. It has a single parameter, the mean waiting time.
-<img alt="" src="images/15579737889594.jpg" style="width: 375px; height: auto; max-width: 100%;"/></p>
+<h5>Exponential Distribution</h5>
+<p>The waiting time between arrivals of a Poisson process is Exponentially distributed. It has a single parameter, the mean waiting time.</p>
+<p><img alt="" src="images/15579737889594.jpg" style="width: 375px; height: auto; max-width: 100%;"/></p>
             </div><!-- /.entry-content -->
 
 
@@ -281,6 +282,7 @@ Area under the PDF gives probabilities</p>
 
   <ul>
 
+    <li ><a href="/pages/about.html">About</a></li>
   
   <h4>Categories</h4>
   <ul class="blank">

@@ -151,9 +151,9 @@ Plot percentile on ECDF&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img alt="" src="images/15577997569705.jpg" style="width: 557px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
 &lt;p&gt;Pearson correlation coefficient: It is a comparison of the variability in the data due to codependence(the covariance) to the variability inherent to each variable independently (their standard deviations).&lt;/p&gt;
-&lt;h1&gt;Discrete variables&lt;/h1&gt;
+&lt;h4&gt;Discrete variables&lt;/h4&gt;
 &lt;p&gt;Given a set of data, you describe probabilistically what you might expect if you collect the same data again and again and again.&lt;/p&gt;
-&lt;h2&gt;Bernoulli trial and binomial distribution&lt;/h2&gt;
+&lt;h5&gt;Bernoulli trial and binomial distribution&lt;/h5&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;perform_bernoulli_trials&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;"""Perform n Bernoulli trials with success probability p&lt;/span&gt;
 &lt;span class="sd"&gt;    and return number of successes."""&lt;/span&gt;
@@ -197,7 +197,7 @@ Plot percentile on ECDF&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Conduct the 4 coin flips for 1000 times&lt;/span&gt;
 &lt;span class="n"&gt;samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;binomial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Plot the Binomial PMF&lt;/h3&gt;
+&lt;h6&gt;Plot the Binomial PMF&lt;/h6&gt;
 &lt;p&gt;Plot the PMF of the Binomial distribution as a histogram. The trick is setting up the edges of the bins to pass to &lt;code&gt;plt.hist()&lt;/code&gt; via the &lt;code&gt;bins&lt;/code&gt; keyword argument. We want the bins centered on the integers. So, the edges of the bins should be &lt;code&gt;-0.5, 0.5, 1.5, 2.5, ...&lt;/code&gt;up to &lt;code&gt;max(n_defaults) + 1.5&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Compute bin edges: bins&lt;/span&gt;
 &lt;span class="n"&gt;bins&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_defaults&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;
@@ -213,14 +213,14 @@ Plot percentile on ECDF&lt;/p&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img alt="" src="images/15578870082606.jpg" style="width: 556px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
-&lt;h2&gt;Poisson distribution&lt;/h2&gt;
+&lt;h5&gt;Poisson distribution&lt;/h5&gt;
 &lt;p&gt;Poisson event: the time of the next event is completely independent of when the previous event happened.&lt;/p&gt;
 &lt;p&gt;The parameter for poisson distribution: the average number of arrivals in a given length of time&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Story&lt;/strong&gt;: The number r of hits on a website in one hour with an average hit rage of 6 hits per hour is Poisson distributed.&lt;/p&gt;
-&lt;h2&gt;Relationship between Binomial and Poisson distribution&lt;/h2&gt;
+&lt;h5&gt;Relationship between Binomial and Poisson distribution&lt;/h5&gt;
 &lt;p&gt;Say we do a Bernoulli trial every minute for an hour, each with a success probability of 0.1. We would do 60 trials, and the number of successes is Binomially distributed, and we would expect to get about 6 successes. This is just like the Poisson story we discussed in the video, where we get on average 6 hits on a website per hour. So, the Poisson distribution with arrival rate equal to &lt;code&gt;np&lt;/code&gt; approximates a Binomial distribution for &lt;code&gt;n&lt;/code&gt; Bernoulli trials with probability &lt;code&gt;p&lt;/code&gt; of success (with n large and p small). Importantly, the Poisson distribution is often simpler to work with because it has only one parameter instead of two for the Binomial distribution. &lt;/p&gt;
-&lt;h1&gt;Continuous Variables&lt;/h1&gt;
-&lt;h2&gt;Probability density function (PDF)&lt;/h2&gt;
+&lt;h4&gt;Continuous Variables&lt;/h4&gt;
+&lt;h5&gt;Probability density function (PDF)&lt;/h5&gt;
 &lt;blockquote&gt;
 &lt;p&gt;PDF is mathematical description of the relative likelihood of observing a value of a continuous variable
 Area under the PDF gives probabilities&lt;/p&gt;
@@ -246,9 +246,9 @@ Area under the PDF gives probabilities&lt;/p&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img alt="" src="images/15579729421596.jpg" style="width: 523px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
-&lt;h2&gt;Exponential Distribution&lt;/h2&gt;
-&lt;p&gt;The waiting time between arrivals of a Poisson process is Exponentially distributed. It has a single parameter, the mean waiting time.
-&lt;img alt="" src="images/15579737889594.jpg" style="width: 375px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;</content></entry><entry><title>Set up a blog in Pelican</title><link href="/set-up-a-blog-in-pelican.html" rel="alternate"></link><published>2019-05-10T10:20:00-04:00</published><updated>2019-05-10T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-10:/set-up-a-blog-in-pelican.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; activate pyspark_env
+&lt;h5&gt;Exponential Distribution&lt;/h5&gt;
+&lt;p&gt;The waiting time between arrivals of a Poisson process is Exponentially distributed. It has a single parameter, the mean waiting time.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="" src="images/15579737889594.jpg" style="width: 375px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;</content></entry><entry><title>Set up a blog in Pelican</title><link href="/set-up-a-blog-in-pelican.html" rel="alternate"></link><published>2019-05-10T10:20:00-04:00</published><updated>2019-05-10T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-10:/set-up-a-blog-in-pelican.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; activate pyspark_env
 pip install pelican markdown
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Create a new github repo with repo name as sophia-li-he.github.io
