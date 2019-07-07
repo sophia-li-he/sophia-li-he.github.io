@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Statistical Thinking in Python (Part 2)</title>
+        <meta charset="utf-8" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Full Atom Feed" />
+        <link href="/feeds/notes.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/pygment.css" />
+
+        <script src="/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="/">Sophia He's Data Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="/">Home</a></li>
+
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/pages/portfolio.html">Portfolio</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="/statistical-thinking-in-python-part-2.html" rel="bookmark"
+                   title="Permalink to Statistical Thinking in Python (Part 2)">Statistical Thinking in Python (Part 2)</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2019-07-06T22:50:00-04:00">
+                Sat 06 July 2019
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="/author/sophia-he.html"> Sophia He</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <h3>Parameter estimation by optimization</h3>
+<p><code>nohitter_times</code> is an array with length of 251. array([ 843, 1613, 1101,  215,  684,  814,..])</p>
+<div class="highlight"><pre><span></span><span class="c1"># Seed random number generator</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Compute mean no-hitter time: tau</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nohitter_times</span><span class="p">)</span>
+
+<span class="c1"># Draw out of an exponential distribution with parameter tau: inter_nohitter_time</span>
+<span class="n">inter_nohitter_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+
+<span class="c1"># Plot the PDF and label axes</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">inter_nohitter_time</span><span class="p">,</span>
+             <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">'step'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Games between no-hitters'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'PDF'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="images/15624691797127.jpg" style="width: 553px; height: auto; max-width: 100%;"/></p>
+<p>Check if the data <code>nohitter_times</code> is exponential distribution.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Create an ECDF from real data: x, y</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">nohitter_times</span><span class="p">)</span>
+
+<span class="c1"># Create a CDF from theoretical samples: x_theor, y_theor</span>
+<span class="n">x_theor</span><span class="p">,</span> <span class="n">y_theor</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">inter_nohitter_time</span><span class="p">)</span>
+
+<span class="c1"># Overlay the plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_theor</span><span class="p">,</span><span class="n">y_theor</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+<span class="c1"># Margins and axis labels</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Games between no-hitters'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'CDF'</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="-w353" src="images/15625203693061.jpg" style="width: 706px; height: auto; max-width: 100%;"/></p>
+<p>It looks like no-hitters in the modern era of Major League Baseball are Exponentially distributed. Based on the story of the Exponential distribution, this suggests that they are a random process; when a no-hitter will happen is independent of when the last no-hitter was.</p>
+<h4>How is the parameter optimal?</h4>
+<p>Plot the mean as 1/2 tau and 2 tau to see how they fit the data</p>
+<div class="highlight"><pre><span></span><span class="c1"># Plot the theoretical CDFs</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_theor</span><span class="p">,</span> <span class="n">y_theor</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Games between no-hitters'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'CDF'</span><span class="p">)</span>
+
+<span class="c1"># Take samples with half tau: samples_half</span>
+<span class="n">samples_half</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">tau</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Take samples with double tau: samples_double</span>
+<span class="n">samples_double</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">tau</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Generate CDFs from these samples</span>
+<span class="n">x_half</span><span class="p">,</span> <span class="n">y_half</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">samples_half</span><span class="p">)</span>
+<span class="n">x_double</span><span class="p">,</span> <span class="n">y_double</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">samples_double</span><span class="p">)</span>
+
+<span class="c1"># Plot these CDFs as lines</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_half</span><span class="p">,</span> <span class="n">y_half</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_double</span><span class="p">,</span> <span class="n">y_double</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="-w360" src="images/15625207642097.jpg" style="width: 720px; height: auto; max-width: 100%;"/></p>
+<p>The value of tau given by the mean matches the data best. In this way, tau is an optimal parameter.</p>
+<h4>Fit a linear regression line to a scatter plot</h4>
+<p><code>illiteracy</code> and <code>fertility</code> are two arrays of data that represent the illiteracy rate (%) and average number of children born per woman in each country. (array length 161)</p>
+<div class="highlight"><pre><span></span><span class="c1"># Plot the illiteracy rate versus fertility</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">illiteracy</span><span class="p">,</span> <span class="n">fertility</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'percent illiterate'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'fertility'</span><span class="p">)</span>
+
+<span class="c1"># Perform a linear regression using np.polyfit(): a, b</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">illiteracy</span><span class="p">,</span> <span class="n">fertility</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Print the results to the screen</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'slope ='</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="s1">'children per woman / percent illiterate'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'intercept ='</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s1">'children per woman'</span><span class="p">)</span>
+
+<span class="c1"># Make theoretical line to plot</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="c1"># Add regression line to your plot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Draw the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625251943280.jpg" style="width: 442px; height: auto; max-width: 100%;"/>
+slope = 0.05 children per woman / percent illiterate
+intercept = 1.89 children per woman</p>
+<h4>How the slope is optimal?</h4>
+<ol>
+<li>Specify the values of the slope to compute the RSS. Use <code>np.linspace()</code> to get 200 points in the range between 0 and 0.1</li>
+<li>Initialize an array, rss, to contain the RSS using <code>np.empty_like()</code> and the array you created above. The <code>empty_like()</code> function returns a new array with the same shape and type as a given array (in this case, <code>a_vals</code>).</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="c1"># Specify slopes to consider: a_vals</span>
+<span class="n">a_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="c1"># Initialize sum of square of residuals: rss</span>
+<span class="n">rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">a_vals</span><span class="p">)</span>
+
+<span class="c1"># Compute sum of square of residuals for each value of a_vals</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a_vals</span><span class="p">):</span>
+    <span class="n">rss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">fertility</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">illiteracy</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Plot the RSS</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_vals</span><span class="p">,</span> <span class="n">rss</span><span class="p">,</span> <span class="s1">'-'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'slope (children per woman / percent illiterate)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'sum of square of residuals'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625263918208.jpg" style="width: 444px; height: auto; max-width: 100%;"/></p>
+<p>The minimum on the plot, that is the value of the slope that gives the minimum sum of the square of the residuals, is the same value you got when performing the regression.</p>
+<h3>Bootstrap confident intervals</h3>
+<h4>Visualize bootstrap</h4>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="c1"># Generate bootstrap sample: bs_sample</span>
+    <span class="n">bs_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">rainfall</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">rainfall</span><span class="p">))</span>
+
+    <span class="c1"># Compute and plot ECDF from bootstrap sample</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">bs_sample</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Compute and plot ECDF from original data</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">rainfall</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">)</span>
+
+<span class="c1"># Make margins and label axes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'yearly rainfall (mm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ECDF'</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<h3><strong>Source</strong></h3>
+<p>https://www.datacamp.com/courses/statistical-thinking-in-python-part-1</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+  <h4>Pages</h4>
+
+  <ul>
+
+    <li ><a href="/pages/about.html">About</a></li>
+    <li ><a href="/pages/portfolio.html">Portfolio</a></li>
+  
+  <h4>Categories</h4>
+  <ul class="blank">
+    <li><a href="/category/blog.html">Blog</a></li>
+    <li><a href="/category/notes.html">Notes</a></li>
+    <li><a href="/category/tutorial.html">Tutorial</a></li>
+  </ul>
+
+
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="/theme/js/libs/gumby.min.js"></script>
+  <script src="/theme/js/plugins.js"></script>
+</body>
+</html>

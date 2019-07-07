@@ -1,67 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sophia He's Data Blog - Python</title><link href="/" rel="alternate"></link><link href="/feeds/python.atom.xml" rel="self"></link><id>/</id><updated>2019-05-10T10:20:00-04:00</updated><entry><title>Set up a blog in Pelican</title><link href="/set-up-a-blog-in-pelican.html" rel="alternate"></link><published>2019-05-10T10:20:00-04:00</published><updated>2019-05-10T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-10:/set-up-a-blog-in-pelican.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; activate pyspark_env
-pip install pelican markdown
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Create a new github repo with repo name as sophia-li-he.github.io
-Change directory to the folder where you want to save your blog&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone https://github.com/sophia-li-he/sophia-li-he.github.io.git
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Change to the new directory&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; sophia-li-he.github.io …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; activate pyspark_env
-pip install pelican markdown
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Create a new github repo with repo name as sophia-li-he.github.io
-Change directory to the folder where you want to save your blog&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone https://github.com/sophia-li-he/sophia-li-he.github.io.git
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Change to the new directory&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; sophia-li-he.github.io
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Use Pelican quickstart&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican-quickstart
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Answer below questions&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Where do you want to create your new web site? [.] ./
-What will be the title of this web site? Sophia He's Data Blog
-Who will be the author of this web site? Sophia He
-What will be the default language of this web site? [en] 
-Do you want to specify a URL prefix? e.g., https://example.com   (Y/n) n
-Do you want to enable article pagination? (Y/n) n
-What is your time zone? [Europe/Paris] America/New_York
-Do you want to generate a tasks.py/Makefile to automate generation and publishing? (Y/n) Y
-Do you want to upload your website using FTP? (y/N) N
-Do you want to upload your website using SSH? (y/N) N
-Do you want to upload your website using Dropbox? (y/N) N
-Do you want to upload your website using S3? (y/N) N
-Do you want to upload your website using Rackspace Cloud Files? (y/N) N
-Do you want to upload your website using GitHub Pages? (y/N) y
-Is this your personal page (username.github.io)? (y/N) y
-Done. Your new project is available at /Users/sophiahe/Sophia/700_Tech/780_data_blog/sophia-li-he.github.io&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Generate content of the blog&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican content
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Preview the blog at &lt;a href="http://localhost:8000/"&gt;local host&lt;/a&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican -l
-&lt;/pre&gt;&lt;/div&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;make github
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Push your changes to github&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git add -A &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -a -m &lt;span class="s1"&gt;'first commit'&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push --all
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The blog can be viewed here: &lt;a href="https://sophia-li-he.github.io"&gt;https://sophia-li-he.github.io&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After adding new contents to the blog&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican content
-make github
-pelican -l
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Reference:&lt;/strong&gt;
-1. https://rsip22.github.io/blog/create-a-blog-with-pelican-and-github-pages.html
-2. https://fedoramagazine.org/make-github-pages-blog-with-pelican/
-3. https://opensource.com/article/19/1/getting-started-pelican
-4. http://docs.getpelican.com/en/stable/publish.html
-5. https://blog.udacity.com/2016/02/how-to-build-a-data-analysis-portfolio-that-will-get-you-hired.html&lt;/p&gt;</content></entry><entry><title>Data Science Project Cheat Sheet</title><link href="/data-science-project-cheat-sheet.html" rel="alternate"></link><published>2019-05-07T10:20:00-04:00</published><updated>2019-05-07T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-07:/data-science-project-cheat-sheet.html</id><summary type="html">&lt;h1&gt;Data Profile&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sophia He's Data Blog - Blog</title><link href="/" rel="alternate"></link><link href="/feeds/blog.atom.xml" rel="self"></link><id>/</id><updated>2019-05-07T10:20:00-04:00</updated><entry><title>Data Science Project Cheat Sheet</title><link href="/data-science-project-cheat-sheet.html" rel="alternate"></link><published>2019-05-07T10:20:00-04:00</published><updated>2019-05-07T10:20:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-05-07:/data-science-project-cheat-sheet.html</id><summary type="html">&lt;h1&gt;Data Profile&lt;/h1&gt;
 &lt;h2&gt;Summary info&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;singlevalue&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_series&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;"""&lt;/span&gt;
@@ -206,4 +144,4 @@ pelican -l
 &lt;span class="n"&gt;length_y_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#num in y_test&lt;/span&gt;
 
 &lt;span class="s2"&gt;"The r-squared score for your model was {} on {} values."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rsquared_score&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;length_y_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category></entry></feed>

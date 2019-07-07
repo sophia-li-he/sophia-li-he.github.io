@@ -39,7 +39,7 @@
                 <li><a href="/">Home</a></li>
 
                 <li><a href="/pages/about.html">About</a></li>
-                <li><a href="/pages/porfolio.html">Porfolio</a></li>
+                <li><a href="/pages/portfolio.html">Portfolio</a></li>
 
               </ul>
             </div>
@@ -54,32 +54,39 @@
         <div class="eleven columns">
                  <ol id="post-list">
                         <li><article class="hentry">
-                                <header> <h2 class="entry-title"><a href="/statistical-inference.html" rel="bookmark" title="Permalink to Statistical Inference">Statistical Inference</a></h2> </header>
+                                <header> <h2 class="entry-title"><a href="/statistical-thinking-in-python-part-2.html" rel="bookmark" title="Permalink to Statistical Thinking in Python (Part 2)">Statistical Thinking in Python (Part 2)</a></h2> </header>
                                 <footer class="post-info">
-                                    <abbr class="published" title="2019-05-11T10:20:00-04:00"> Sat 11 May 2019 </abbr>
+                                    <abbr class="published" title="2019-07-06T22:50:00-04:00"> Sat 06 July 2019 </abbr>
                                     <address class="vcard author">By 
                                     <a class="url fn" href="/author/sophia-he.html"> Sophia He</a>
                                     </address>
                                 </footer><!-- /.post-info -->
-                                <div class="entry-content"> <p>The idea behind statistical inference is to understand samples from a hypothetical population where the null hypothesis is true. </p>
-<ul>
-<li>Null hypothesis(H0)：The claim that is not interesting</li>
-<li>Alternative hypothesis (Ha): The claim corresponding to the research hypothesis.</li>
-<li>Example: <ul>
-<li>H0: from East and West Coasts, where cola preference is the …</li></ul></li></ul> </div><!-- /.entry-content -->
+                                <div class="entry-content"> <h3>Parameter estimation by optimization</h3>
+<p><code>nohitter_times</code> is an array with length of 251. array([ 843, 1613, 1101,  215,  684,  814,..])</p>
+<div class="highlight"><pre><span></span><span class="c1"># Seed random number generator</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
-                                <div class="medium primary btn"><a href="/statistical-inference.html" rel="bookmark" title="Permalink to Statistical Inference">Read more <i class="icon-arrow-right"></i></a></div>
+<span class="c1"># Compute mean no-hitter time: tau</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nohitter_times</span><span class="p">)</span>
+
+<span class="c1"># Draw out of an exponential distribution with parameter tau: inter_nohitter_time</span>
+<span class="n">inter_nohitter_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential …</span></pre></div> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="/statistical-thinking-in-python-part-2.html" rel="bookmark" title="Permalink to Statistical Thinking in Python (Part 2)">Read more <i class="icon-arrow-right"></i></a></div>
 
 
 
                                 <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="/tag/statistics.html">Statistics</a>
+                                            <a class="danger label" href="/tag/python.html">Python</a>
                                 </div>
 
 
 
                         </article></li>
                         <li><article class="hentry">
-                                <header> <h2 class="entry-title"><a href="/statistical-thinking-in-python.html" rel="bookmark" title="Permalink to Statistical Thinking in Python">Statistical Thinking in Python</a></h2> </header>
+                                <header> <h2 class="entry-title"><a href="/statistical-thinking-in-python-part-1.html" rel="bookmark" title="Permalink to Statistical Thinking in Python (Part 1)">Statistical Thinking in Python (Part 1)</a></h2> </header>
                                 <footer class="post-info">
                                     <abbr class="published" title="2019-05-11T10:20:00-04:00"> Sat 11 May 2019 </abbr>
                                     <address class="vcard author">By 
@@ -103,11 +110,14 @@
 
 <span class="c1"># Convert …</span></pre></div> </div><!-- /.entry-content -->
 
-                                <div class="medium primary btn"><a href="/statistical-thinking-in-python.html" rel="bookmark" title="Permalink to Statistical Thinking in Python">Read more <i class="icon-arrow-right"></i></a></div>
+                                <div class="medium primary btn"><a href="/statistical-thinking-in-python-part-1.html" rel="bookmark" title="Permalink to Statistical Thinking in Python (Part 1)">Read more <i class="icon-arrow-right"></i></a></div>
 
 
 
                                 <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="/tag/statistics.html">Statistics</a>
+                                            <a class="danger label" href="/tag/python.html">Python</a>
                                 </div>
 
 
@@ -136,6 +146,8 @@ Change directory to the folder where you want to save your blog</p>
 
 
                                 <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="/tag/python.html">Python</a>
                                 </div>
 
 
@@ -172,6 +184,8 @@ Change directory to the folder where you want to save your blog</p>
 
 
                                 <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="/tag/python.html">Python</a>
                                 </div>
 
 
@@ -188,12 +202,13 @@ Change directory to the folder where you want to save your blog</p>
   <ul>
 
     <li ><a href="/pages/about.html">About</a></li>
-    <li ><a href="/pages/porfolio.html">Porfolio</a></li>
+    <li ><a href="/pages/portfolio.html">Portfolio</a></li>
   
   <h4>Categories</h4>
   <ul class="blank">
-    <li><a href="/category/python.html">Python</a></li>
-    <li><a href="/category/statistics.html">Statistics</a></li>
+    <li><a href="/category/blog.html">Blog</a></li>
+    <li><a href="/category/notes.html">Notes</a></li>
+    <li><a href="/category/tutorial.html">Tutorial</a></li>
   </ul>
 
 
