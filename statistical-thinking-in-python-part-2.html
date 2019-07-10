@@ -66,7 +66,8 @@
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
-              <h3>Parameter estimation by optimization</h3>
+              <p>[TOC]</p>
+<h3>Parameter estimation by optimization</h3>
 <p><code>nohitter_times</code> is an array with length of 251. array([ 843, 1613, 1101,  215,  684,  814,..])</p>
 <div class="highlight"><pre><span></span><span class="c1"># Seed random number generator</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -104,7 +105,7 @@
 <span class="c1"># Show the plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<p><img alt="-w353" src="images/15625203693061.jpg" style="width: 706px; height: auto; max-width: 100%;"/></p>
+<p><img alt="-w353" src="images/15625203693061.jpg" style="width: 530px; height: auto; max-width: 100%;"/></p>
 <p>It looks like no-hitters in the modern era of Major League Baseball are Exponentially distributed. Based on the story of the Exponential distribution, this suggests that they are a random process; when a no-hitter will happen is independent of when the last no-hitter was.</p>
 <h4>How is the parameter optimal?</h4>
 <p>Plot the mean as 1/2 tau and 2 tau to see how they fit the data</p>
@@ -159,8 +160,8 @@
 <span class="c1"># Draw the plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<p><img alt="" src="images/15625251943280.jpg" style="width: 442px; height: auto; max-width: 100%;"/>
-slope = 0.05 children per woman / percent illiterate
+<p><img alt="" src="images/15625251943280.jpg" style="width: 442px; height: auto; max-width: 100%;"/></p>
+<p>slope = 0.05 children per woman / percent illiterate
 intercept = 1.89 children per woman</p>
 <h4>How the slope is optimal?</h4>
 <ol>
@@ -187,7 +188,13 @@ intercept = 1.89 children per woman</p>
 <p><img alt="" src="images/15625263918208.jpg" style="width: 444px; height: auto; max-width: 100%;"/></p>
 <p>The minimum on the plot, that is the value of the slope that gives the minimum sum of the square of the residuals, is the same value you got when performing the regression.</p>
 <h3>Bootstrap confident intervals</h3>
+<blockquote>
+<p><strong>bootstrap replicate</strong>: A single value of a statistic computed from a bootstrap sample.</p>
+</blockquote>
 <h4>Visualize bootstrap</h4>
+<p><code>rainfall</code> is a numpy array, annual rainfall data measured at the Sheffield Weather Station in the UK from 1883 to 2015.
+1. Generate the bootstrap samples from the rainfall array and plot ecdf. Note the use of <code>for _ in range(50)</code>
+2. Plot the ecdf of the original data</p>
 <div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
     <span class="c1"># Generate bootstrap sample: bs_sample</span>
     <span class="n">bs_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">rainfall</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">rainfall</span><span class="p">))</span>
@@ -209,6 +216,227 @@ intercept = 1.89 children per woman</p>
 <span class="c1"># Show the plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+<p><img alt="" src="images/15625296074158.jpg" style="width: 489px; height: auto; max-width: 100%;"/></p>
+<p>the bootstrap samples give an idea of how the distribution of rainfalls is spread.</p>
+<h4>Confidence intervals</h4>
+<blockquote>
+<p><strong>Confidence intervals</strong>: if we repeated measurements over and over again, p% of the observed values would lie within the p% confidence interval.</p>
+</blockquote>
+<div class="highlight"><pre><span></span> <span class="k">def</span> <span class="nf">bootstrap_replicate_1d</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+      <span class="sd">"""Generate bootstrap replicate of 1D data.</span>
+<span class="sd">      input: 1D data, fuction name</span>
+<span class="sd">      output: the value calculated using the bootstrap sample and function</span>
+<span class="sd">      """</span>
+      <span class="n">bs_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+      <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">bs_sample</span><span class="p">)</span> 
+</pre></div>
+<p>Generating many <strong>bootstrap replicates</strong> (the statistics of the bootstrap sample)</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_bs_reps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">"""Draw bootstrap replicates."""</span>
+
+    <span class="c1"># Initialize array of replicates: bs_replicates</span>
+    <span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Generate replicates</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">size</span><span class="p">:</span>
+        <span class="n">bs_replicates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">bootstrap_replicate_1d</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bs_replicates</span>
+</pre></div>
+<h4>Bootstrap replicates of the mean and the SEM</h4>
+<p>Compute a bootstrap estimate of the probability density function of the mean annual rainfall at the Sheffield Weather Station. Remember, we are estimating the mean annual rainfall we would get if the Sheffield Weather Station could repeat all of the measurements from 1883 to 2015 over and over again. This is a probabilistic estimate of the mean. You will plot the PDF as a histogram, and you will see that it is Normal.</p>
+<p>The standard deviation of this distribution, called the standard error of the mean, or SEM, is given by the standard deviation of the data divided by the square root of the number of data points. I.e., for a data set, <code>sem = np.std(data) / np.sqrt(len(data))</code>. Using hacker statistics, you get this same result without the need to derive it, but you will verify this result from your bootstrap replicates.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Take 10,000 bootstrap replicates of the mean: bs_replicates</span>
+<span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">draw_bs_reps</span><span class="p">(</span><span class="n">rainfall</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Compute and print SEM</span>
+<span class="n">sem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">rainfall</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rainfall</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sem</span><span class="p">)</span>
+
+<span class="c1"># Compute and print standard deviation of bootstrap replicates</span>
+<span class="n">bs_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">bs_replicates</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">bs_std</span><span class="p">)</span>
+
+<span class="c1"># Make a histogram of the results</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bs_replicates</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'mean annual rainfall (mm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'PDF'</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625320427504.jpg" style="width: 551px; height: auto; max-width: 100%;"/>
+The SEM we got from the known expression and the bootstrap replicates is the same and the distribution of the bootstrap replicates of the mean is Normal.</p>
+<h4>Calculate the confidence interval of the mean</h4>
+<div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bs_replicates</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">])</span>
+</pre></div>
+<h4>Bootstrap replicates of variance</h4>
+<div class="highlight"><pre><span></span><span class="c1"># Generate 10,000 bootstrap replicates of the variance: bs_replicates</span>
+<span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">draw_bs_reps</span><span class="p">(</span><span class="n">rainfall</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Put the variance in units of square centimeters</span>
+<span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">bs_replicates</span> <span class="o">/</span> <span class="mi">100</span>
+
+<span class="c1"># Make a histogram of the results</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bs_replicates</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'variance of annual rainfall (sq. cm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'PDF'</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625331580076.jpg" style="width: 553px; height: auto; max-width: 100%;"/></p>
+<h4>Pairs bootstrap</h4>
+<p>Like the mean of the data, the slope and intercept from the linear regression of the data are also statistics (bootstrap replicate) of the data.</p>
+<p>Instead of bootstrapping from the 1D data, bootstrap from the index. Then select the data pairs using the bootstrap index.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_bs_pairs_linreg</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">"""Perform pairs bootstrap for linear regression.</span>
+<span class="sd">    output: the bootstrap replicate of slope (size length array)</span>
+<span class="sd">    bootstrap replicate of intercept (size length array) </span>
+<span class="sd">    """</span>
+
+    <span class="c1"># Set up array of indices to sample from: inds</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># Initialize replicates: bs_slope_reps, bs_intercept_reps</span>
+    <span class="n">bs_slope_reps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">bs_intercept_reps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Generate replicates</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="n">bs_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">inds</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">bs_x</span><span class="p">,</span> <span class="n">bs_y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">bs_inds</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">bs_inds</span><span class="p">]</span>
+        <span class="n">bs_slope_reps</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">bs_intercept_reps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">bs_x</span><span class="p">,</span> <span class="n">bs_y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bs_slope_reps</span><span class="p">,</span> <span class="n">bs_intercept_reps</span>
+</pre></div>
+<p>Pairs bootstrap of literacy/fertility data</p>
+<div class="highlight"><pre><span></span><span class="c1"># Generate replicates of slope and intercept using pairs bootstrap</span>
+<span class="n">bs_slope_reps</span><span class="p">,</span> <span class="n">bs_intercept_reps</span> <span class="o">=</span> <span class="n">draw_bs_pairs_linreg</span><span class="p">(</span><span class="n">illiteracy</span><span class="p">,</span> <span class="n">fertility</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Compute and print 95% CI for slope</span>
+<span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bs_slope_reps</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">]))</span>
+
+<span class="c1"># Plot the histogram</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bs_slope_reps</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'slope'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'PDF'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625351861181.jpg" style="width: 548px; height: auto; max-width: 100%;"/></p>
+<h4>Plot bootstrap regression</h4>
+<div class="highlight"><pre><span></span><span class="c1"># Generate array of x-values for bootstrap lines: x</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+
+<span class="c1"># Plot the bootstrap lines</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> 
+                 <span class="n">bs_slope_reps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">bs_intercept_reps</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                 <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+
+<span class="c1"># Plot the data</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">illiteracy</span><span class="p">,</span> <span class="n">fertility</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+<span class="c1"># Label axes, set the margins, and show the plot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'illiteracy'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'fertility'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625355745923.jpg" style="width: 561px; height: auto; max-width: 100%;"/></p>
+<h3>Hypothesis testing</h3>
+<blockquote>
+<p>Hypothesis testing: Assessment of how reasonable the observed data are assuming a hypothesis is true. Null hypothesis is the hypothesis that you are testing.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">permutation_sample</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">):</span>
+    <span class="sd">"""Generate a permutation sample from two data sets."""</span>
+
+    <span class="c1"># Concatenate the data sets: data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">))</span>
+
+    <span class="c1"># Permute the concatenated array: permuted_data</span>
+    <span class="n">permuted_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Split the permuted array into two: perm_sample_1, perm_sample_2</span>
+    <span class="n">perm_sample_1</span> <span class="o">=</span> <span class="n">permuted_data</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">data1</span><span class="p">)]</span>
+    <span class="n">perm_sample_2</span> <span class="o">=</span> <span class="n">permuted_data</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">data1</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">permuted_data</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">perm_sample_1</span><span class="p">,</span> <span class="n">perm_sample_2</span>
+</pre></div>
+<h4>Permutation</h4>
+<p><strong>The null hypothesis when using permutation is the two samples are identically distributed.</strong></p>
+<p>We will use the Sheffield Weather Station data again, this time considering the monthly rainfall in July (a dry month) and November (a wet month). We expect these might be differently distributed, so we will take permutation samples to see how their ECDFs would look if they were identically distributed.</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="c1"># Generate permutation samples</span>
+    <span class="n">perm_sample_1</span><span class="p">,</span> <span class="n">perm_sample_2</span> <span class="o">=</span> <span class="n">permutation_sample</span><span class="p">(</span><span class="n">rain_june</span><span class="p">,</span> <span class="n">rain_november</span><span class="p">)</span>
+
+
+    <span class="c1"># Compute ECDFs</span>
+    <span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">perm_sample_1</span><span class="p">)</span>
+    <span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">perm_sample_2</span><span class="p">)</span>
+
+    <span class="c1"># Plot ECDFs of permutation sample</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="c1"># Create and plot ECDFs from original data</span>
+<span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">rain_june</span><span class="p">)</span>
+<span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span> <span class="o">=</span> <span class="n">ecdf</span><span class="p">(</span><span class="n">rain_november</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">)</span>
+
+<span class="c1"># Label axes, set margin, and show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'monthly rainfall (mm)'</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'ECDF'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="images/15625500599897.jpg" style="width: 553px; height: auto; max-width: 100%;"/>
+Notice that the permutation samples ECDFs overlap and give a purple haze. None of the ECDFs from the permutation samples overlap with the observed data, suggesting that the hypothesis is not commensurate with the data. July and November rainfall are not identically distributed.</p>
+<blockquote>
+<p><strong>p-value</strong>: the probability of obtaining a value of your <strong>test statistics</strong> that is at least as extreme as what was observed, under the assumption the <strong>null hypothesis</strong> is true.</p>
+</blockquote>
+<p>Calculate the perm replicates(single statistics) on the permuted samples for n(n = size) times</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_perm_reps</span><span class="p">(</span><span class="n">data_1</span><span class="p">,</span> <span class="n">data_2</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">"""Generate multiple permutation replicates.</span>
+<span class="sd">    size is the number of permutation samples generated</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># Initialize array of replicates: perm_replicates</span>
+    <span class="n">perm_replicates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="c1"># Generate permutation sample</span>
+        <span class="n">perm_sample_1</span><span class="p">,</span> <span class="n">perm_sample_2</span> <span class="o">=</span> <span class="n">permutation_sample</span><span class="p">(</span><span class="n">data_1</span><span class="p">,</span> <span class="n">data_2</span><span class="p">)</span>
+
+        <span class="c1"># Compute the test statistic</span>
+        <span class="n">perm_replicates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">perm_sample_1</span><span class="p">,</span> <span class="n">perm_sample_2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">perm_replicates</span>
+</pre></div>
+<p><code>force_a</code>and <code>force_b</code> are two arrays. The goal below is to test if the distributions of <code>force_a</code> and <code>force_b</code> are identical.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">diff_of_means</span><span class="p">(</span><span class="n">data_1</span><span class="p">,</span> <span class="n">data_2</span><span class="p">):</span>
+    <span class="sd">"""Difference in means of two arrays."""</span>
+
+    <span class="c1"># The difference of means of data_1, data_2: diff</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">diff</span>
+
+<span class="c1"># Compute difference of mean impact force from experiment: empirical_diff_means</span>
+<span class="n">empirical_diff_means</span> <span class="o">=</span> <span class="n">diff_of_means</span><span class="p">(</span><span class="n">force_a</span><span class="p">,</span> <span class="n">force_b</span><span class="p">)</span>
+
+<span class="c1"># Draw 10,000 permutation replicates: perm_replicates</span>
+<span class="n">perm_replicates</span> <span class="o">=</span> <span class="n">draw_perm_reps</span><span class="p">(</span><span class="n">force_a</span><span class="p">,</span> <span class="n">force_b</span><span class="p">,</span>
+                                 <span class="n">diff_of_means</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Compute p-value: p</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">perm_replicates</span> <span class="o">&gt;=</span> <span class="n">empirical_diff_means</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm_replicates</span><span class="p">)</span>
+</pre></div>
+<h4>One sample test</h4>
+<p>The goal is to calculate the probability of getting a mean impact force less than or equal to what was observed for Frog B if the hypothesis that the true mean of Frog B's impact forces is equal to that of Frog C is true.</p>
 <h3><strong>Source</strong></h3>
 <p>https://www.datacamp.com/courses/statistical-thinking-in-python-part-1</p>
             </div><!-- /.entry-content -->
@@ -239,6 +467,7 @@ intercept = 1.89 children per woman</p>
   <h4>Social</h4>
   <ul class="blank">
     <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
+    <li><a href="https://github.com/sophia-li-he">Github</a></li>
   </ul>
 </nav>
 
