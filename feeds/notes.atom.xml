@@ -74,7 +74,7 @@
 &lt;span class="c1"&gt;# Show the plot&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img alt="-w360" src="images/15625207642097.jpg" style="width: 720px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="-w360" src="images/15625207642097.jpg" style="width: 576px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
 &lt;p&gt;The value of tau given by the mean matches the data best. In this way, tau is an optimal parameter.&lt;/p&gt;
 &lt;h4&gt;Fit a linear regression line to a scatter plot&lt;/h4&gt;
 &lt;p&gt;&lt;code&gt;illiteracy&lt;/code&gt; and &lt;code&gt;fertility&lt;/code&gt; are two arrays of data that represent the illiteracy rate (%) and average number of children born per woman in each country. (array length 161)&lt;/p&gt;
