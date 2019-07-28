@@ -74,7 +74,7 @@
 <span class="c1"># Compute mean no-hitter time: tau</span>
 <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nohitter_times</span><span class="p">)</span>
 
-<span class="c1"># Draw out of an exponential distribution with parameter tau: inter_nohitter_time</span>
+<span class="c1"># Draw out of an exponential distribution with parame*ter tau: inter_nohitter_time</span>
 <span class="n">inter_nohitter_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
 
 <span class="c1"># Plot the PDF and label axes</span>
@@ -363,7 +363,7 @@ The SEM we got from the known expression and the bootstrap replicates is the sam
     <span class="k">return</span> <span class="n">perm_sample_1</span><span class="p">,</span> <span class="n">perm_sample_2</span>
 </pre></div>
 <h4>Permutation</h4>
-<p><strong>The null hypothesis when using permutation is the two samples are identically distributed.</strong></p>
+<p><strong>The null hypothesis when using permutation is the two samples come from the same distribution.</strong></p>
 <p>We will use the Sheffield Weather Station data again, this time considering the monthly rainfall in July (a dry month) and November (a wet month). We expect these might be differently distributed, so we will take permutation samples to see how their ECDFs would look if they were identically distributed.</p>
 <div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
     <span class="c1"># Generate permutation samples</span>
@@ -434,10 +434,160 @@ Notice that the permutation samples ECDFs overlap and give a purple haze. None o
 <span class="c1"># Compute p-value: p</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">perm_replicates</span> <span class="o">&gt;=</span> <span class="n">empirical_diff_means</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm_replicates</span><span class="p">)</span>
 </pre></div>
+<h4>Pipeline for hypothesis testing</h4>
+<ol>
+<li>Clearly state the null hypothesis</li>
+<li>Define your test statistic</li>
+<li>Generate many sets of simulated data assuming the null hypothesis is true</li>
+<li>Compute the test statistic for each simulated data set</li>
+<li>The p-value is the fraction of your simulated data sets for which the test statistic is at least as extreme as for the real data</li>
+</ol>
 <h4>One sample test</h4>
-<p>The goal is to calculate the probability of getting a mean impact force less than or equal to what was observed for Frog B if the hypothesis that the true mean of Frog B's impact forces is equal to that of Frog C is true.</p>
+<p>E.g. we have the dataset of Michelson's speed of light experiments (an array <code>michelson_speed_of_light</code>) and the reported value (mean) for Newcomb's experiment (299,860)</p>
+<ol>
+<li>Null hypothesis: the true mean speed of light in Michelson's experiments was actually Newcomb's reported value (reported mean)<ol>
+<li>The true mean speed of light in Michelson's experiments: the mean Michelson would have gotten had he done his experiment lots and lots of time</li>
+</ol>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="n">newcomb_value</span> <span class="o">=</span> <span class="mi">299860</span>
+<span class="n">michelson_shifted</span> <span class="o">=</span> <span class="n">michelson_speed_of_light</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">michelson_speed_of_light</span><span class="p">)</span> <span class="o">+</span> <span class="n">newcomb_value</span>
+</pre></div>
+<p><img alt="" src="images/15643296307235.jpg" style="width: 484px; height: auto; max-width: 100%;"/>
+1. Test statistics: the mean of the bootstrap sample minus Newcomb's value</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">diff_from_newcomb</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">newcomb_value</span><span class="o">=</span><span class="mi">299860</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">newcomb_value</span>
+
+<span class="n">diff_obs</span> <span class="o">=</span> <span class="n">diff_from_newcomb</span><span class="p">(</span><span class="n">michelson_speed_of_light</span><span class="p">)</span>
+<span class="c1"># diff_obs = -7.59</span>
+
+<span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">draw_bs_reps</span><span class="p">(</span><span class="n">michelson_shifted</span><span class="p">,</span> <span class="n">diff_from_newcomb</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+
+<span class="n">p_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bs_replicates</span> <span class="o">&lt;=</span> <span class="n">diff_observed</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+</pre></div>
+<p>Example 2: One-sample test
+We know the Frog C has a tongue impact force as 0.55N. We also have the dataset for Frog B. We can't assess the hypothesis that the forces from Frog B and Frog C come from the same distribution. We can test another, <strong>less restrictive</strong> hypothesis: the mean strike force of Frog B is equal to that of Frog C.
+- Step1: Null hypothesis: the mean strike force of Frog B is equal to that of Frog C
+- Step2: The test statistics is the mean of Frog B
+- Step3: Generate simulated data under the null hypothesis is true</p>
+<div class="highlight"><pre><span></span><span class="c1"># Make an array of translated impact forces: translated_force_b</span>
+<span class="n">translated_force_b</span> <span class="o">=</span> <span class="n">force_b</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">force_b</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.55</span>
+</pre></div>
+<ul>
+<li>Step4: Compute the test statistics for each simulated dataset</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Take bootstrap replicates of Frog B's translated impact forces: bs_replicates</span>
+<span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">draw_bs_reps</span><span class="p">(</span><span class="n">translated_force_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+<ul>
+<li>Step5: Calculate p-value</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Compute fraction of replicates that are less than the observed Frog B force: p</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bs_replicates</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">force_b</span><span class="p">))</span> <span class="o">/</span> <span class="mi">10000</span>
+</pre></div>
+<h4>Two-sample bootstrap hypothesis test for difference of means</h4>
+<p>If we want to test the hypothesis that Frog A and Frog B have the same mean impact force, but not necessarily the same distribution, which is also impossible with a permutation test.
+- Step1: null hypothesis: The means of Frog A and Frog B are equal
+- Step2: test statistics: the difference between the mean of Frog A and the mean of Frog B
+- Step3: Generate simulated data under the null hypothesis is true</p>
+<div class="highlight"><pre><span></span><span class="c1"># Compute mean of all forces: mean_force</span>
+<span class="n">mean_force</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">forces_concat</span><span class="p">)</span>
+
+<span class="c1"># Generate shifted arrays</span>
+<span class="n">force_a_shifted</span> <span class="o">=</span> <span class="n">force_a</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">force_a</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean_force</span>
+<span class="n">force_b_shifted</span> <span class="o">=</span> <span class="n">force_b</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">force_b</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean_force</span>
+</pre></div>
+<ul>
+<li>Step4: Compute the test statistics for each simulated dataset</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Compute 10,000 bootstrap replicates from shifted arrays</span>
+<span class="n">bs_replicates_a</span> <span class="o">=</span> <span class="n">draw_bs_reps</span><span class="p">(</span><span class="n">force_a_shifted</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">bs_replicates_b</span> <span class="o">=</span> <span class="n">draw_bs_reps</span><span class="p">(</span><span class="n">force_b_shifted</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="mi">10000</span> <span class="p">)</span>
+
+<span class="c1"># Get replicates of difference of means: bs_replicates</span>
+<span class="n">bs_replicates</span> <span class="o">=</span> <span class="n">bs_replicates_a</span> <span class="o">-</span> <span class="n">bs_replicates_b</span>
+</pre></div>
+<ul>
+<li>Step5: Calculate the p-value</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bs_replicates</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">force_a</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">force_b</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">10000</span>
+</pre></div>
+<p><strong>Carefully think about</strong> what question you want to ask. Are you only interested in the mean impact force, or in the distribution of impact forces?</p>
+<h3>A/B testing</h3>
+<p>A webpage is redesigned. Measure the click-through rate. We may use the permutation test.
+- Step1: Null hypothesis: the click-through rate is not affected by the redesign
+- Step2: test statistics: percentage that click-through</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c1"># clickthrough_A, click_through_B: array of 1s and 0s</span>
+
+<span class="k">def</span> <span class="nf">diff_frac</span><span class="p">(</span><span class="n">data_A</span><span class="p">,</span> <span class="n">data_B</span><span class="p">):</span>
+        <span class="n">frac_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data_A</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_A</span><span class="p">)</span>
+        <span class="n">frac_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data_B</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_B</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frac_B</span> <span class="o">-</span> <span class="n">frac_A</span>
+
+<span class="c1"># The difference of observed value</span>
+<span class="n">diff_frac_obs</span> <span class="o">=</span> <span class="n">diff_frac</span><span class="p">(</span><span class="n">clickthrough_A</span><span class="p">,</span> <span class="n">clickthrough_B</span><span class="p">)</span> 
+</pre></div>
+<ul>
+<li>Step 3: generate the simulated data under null hypothesis</li>
+<li>Step 4: calculate the test statistics on the simulated data</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">per_replicates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="n">perm_replicates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">permutation_replicate</span><span class="p">(</span><span class="n">clickthrough_A</span><span class="p">,</span> <span class="n">clickthrough_B</span><span class="p">,</span> <span class="n">diff_frac</span><span class="p">)</span>
+</pre></div>
+<ul>
+<li>Step 5: calculate the p-value</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">p_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">perm_replicates</span> <span class="o">&gt;=</span> <span class="n">diff_frac_obs</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+</pre></div>
+<h4>A/B Test steps:</h4>
+<ul>
+<li>Null hypothesis: the test statistic is impervious to the change</li>
+<li>A low p-value implies that the change in strategy lead to a change in performance</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Construct arrays of data</span>
+<span class="n">dems</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">]</span> <span class="o">*</span> <span class="mi">153</span> <span class="o">+</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span> <span class="o">*</span> <span class="mi">91</span><span class="p">)</span>
+<span class="n">reps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">]</span> <span class="o">*</span> <span class="mi">136</span> <span class="o">+</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+</pre></div>
+<h3>Test of correlation</h3>
+<p>Pearson correlation coefficient is a measure of how much of the variability in two variables is due to them being correlated.
+- Step 1: Null hypothesis: the two variables are completely uncorrelated (e.g. Obama vote share in each county and total votes in each county)
+- Step 2: simulate the data assuming the null hypothesis is true
+- Step 3: Pearson correlation as the test statistic
+- Step 4: calculate the test statistic on the simulated data
+- Step 5: compute p-value as fraction of replicates that have Pearson correlation at least as large as observed <strong>Sufficient extreme</strong>
+<img alt="" src="images/15643436856774.jpg" style="width: 558px; height: auto; max-width: 100%;"/></p>
+<h4>Example: female illiteracy and fertility in different countries</h4>
+<ul>
+<li>Step 1: null hypothesis: the fertility of a given country is totally independent of its illiteracy</li>
+<li>Step 2: test statistics: Pearson correlation</li>
+<li>Step 3: generate simulated dataset (permute the illiteracy values but leave the fertility values fixed)</li>
+<li>Step 4: calculate the test statistics in simulated dataset</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Compute observed correlation: r_obs</span>
+<span class="n">r_obs</span> <span class="o">=</span> <span class="n">pearson_r</span><span class="p">(</span><span class="n">illiteracy</span><span class="p">,</span> <span class="n">fertility</span><span class="p">)</span>
+
+<span class="c1"># Initialize permutation replicates: perm_replicates</span>
+<span class="n">perm_replicates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+
+<span class="c1"># Draw replicates</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="c1"># Permute illiteracy measurments: illiteracy_permuted</span>
+    <span class="n">illiteracy_permuted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">illiteracy</span><span class="p">)</span>
+
+    <span class="c1"># Compute Pearson correlation</span>
+    <span class="n">perm_replicates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pearson_r</span><span class="p">(</span><span class="n">illiteracy_permuted</span><span class="p">,</span> <span class="n">fertility</span><span class="p">)</span>
+
+<span class="c1"># Compute p-value: p</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">perm_replicates</span> <span class="o">&gt;=</span> <span class="n">r_obs</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'p-val ='</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+<ul>
+<li>Step 5: calculate the p-value</li>
+</ul>
 <h3><strong>Source</strong></h3>
-<p>https://www.datacamp.com/courses/statistical-thinking-in-python-part-1</p>
+<p>https://www.datacamp.com/courses/statistical-thinking-in-python-part-2</p>
             </div><!-- /.entry-content -->
 
 
