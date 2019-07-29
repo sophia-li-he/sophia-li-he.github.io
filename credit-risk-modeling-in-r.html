@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Credit Risk Modeling in R</title>
+        <meta charset="utf-8" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Full Atom Feed" />
+        <link href="/feeds/notes.atom.xml" type="application/atom+xml" rel="alternate" title="Sophia He's Data Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/pygment.css" />
+
+        <script src="/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="/">Sophia He's Data Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="/">Home</a></li>
+
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/pages/portfolio.html">Portfolio</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="/credit-risk-modeling-in-r.html" rel="bookmark"
+                   title="Permalink to Credit Risk Modeling in R">Credit Risk Modeling in R</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2019-07-20T10:50:00-04:00">
+                Sat 20 July 2019
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="/author/sophia-he.html"> Sophia He</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <h3>Introduction and EDA</h3>
+<p>Components of expected loss (EL)
+- Probability of default (PD)
+- Exposure at default (EAD): the amount of the loan that still needs to be repaid at the time of default
+- Loss given default (LGD): the amount of loss if there is a default (express as a percentage of EAD)</p>
+<blockquote>
+<p>EL = PD * EAD * LGD</p>
+</blockquote>
+<p>Information used by banks:
+- Application information: demo...
+- Behavioral information:
+    - current account balance
+    - payment arrears in account history</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span>str<span class="p">(</span>loan_data<span class="p">)</span>
+</pre></div>
+<p><img alt="" src="images/15643474511743.jpg" style="width: 911px; height: auto; max-width: 100%;"/></p>
+<h4>Cross Table</h4>
+<div class="highlight"><pre><span></span><span class="c1"># Load the gmodels package </span>
+<span class="kn">library</span><span class="p">(</span>gmodels<span class="p">)</span>
+
+<span class="c1"># Call CrossTable() on loan_status</span>
+CrossTable<span class="p">(</span>loan_data<span class="o">$</span>loan_status<span class="p">)</span>
+
+<span class="c1"># Call CrossTable() on grade and loan_status</span>
+CrossTable<span class="p">(</span>x<span class="o">=</span>loan_data<span class="o">$</span>grade<span class="p">,</span> y<span class="o">=</span>loan_data<span class="o">$</span>loan_status<span class="p">,</span> prop.r<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> prop.c<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> prop.t<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> prop.chisq<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+<p><img alt="-w292" src="images/15643476894532.jpg" style="width: 584px; height: auto; max-width: 100%;"/></p>
+<h4>Histograms and outliers</h4>
+<p>Plot histogram of the annual income</p>
+<div class="highlight"><pre><span></span>hist_income<span class="o">&lt;-</span> hist<span class="p">(</span>loan_date<span class="o">$</span>annual_inc<span class="p">,</span> xlab <span class="o">=</span> <span class="s">"Annual Income"</span><span class="p">,</span> main <span class="o">=</span> <span class="s">"Histogram of Annual Income"</span><span class="p">)</span>
+
+<span class="c1"># Check the break of the annual income</span>
+hist_income<span class="o">$</span>breaks
+
+<span class="c1"># Set the n_breaks</span>
+n_breaks<span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>loan_data<span class="p">))</span>
+hist_income_n<span class="o">&lt;-</span>  hist<span class="p">(</span>loan_date<span class="o">$</span>annual_inc<span class="p">,</span> breaks<span class="o">=</span>n_breaks<span class="p">,</span> xlab <span class="o">=</span> <span class="s">"Annual Income"</span><span class="p">,</span> main <span class="o">=</span> <span class="s">"Histogram of Annual Income"</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="images/15643504855878.jpg" style="width: 423px; height: auto; max-width: 100%;"/></p>
+<p>Plot to see the outlier of annual income</p>
+<div class="highlight"><pre><span></span>plot<span class="p">(</span>loan_date<span class="o">$</span>annual_inc<span class="p">,</span> ylab <span class="o">=</span> <span class="s">"Annual Income"</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="images/15643505048608.jpg" style="width: 494px; height: auto; max-width: 100%;"/>
+Outlier:
+- expert judgement
+- rule of thumb: Q1 - 1.5 * IQR -- Q3 + 1.5 * IQR
+- mostly: combination of both</p>
+<div class="highlight"><pre><span></span><span class="c1"># expert judgement: annual &gt; 3m</span>
+index_outlier_expert<span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span>loan_date<span class="o">$</span>annual_inc <span class="o">&gt;</span> <span class="m">3000000</span>
+loan_data_expert<span class="o">&lt;-</span> loan_date<span class="p">[</span><span class="o">-</span>index_outlier_expert<span class="p">,]</span>
+
+<span class="c1"># rule of thumb: bigger than Q3 + 1.5 *IQR</span>
+outlier_cutoff<span class="o">&lt;-</span> quantile<span class="p">(</span>loan_date<span class="o">$</span>annual_inc<span class="p">,</span> <span class="m">0.75</span><span class="p">)</span> <span class="o">+</span> <span class="m">1.5</span> <span class="o">*</span> IQR<span class="p">(</span>loan_data<span class="o">$</span>annual_inc<span class="p">)</span>
+index_outlier_ROT<span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span>loan_data<span class="o">$</span>annual_inc <span class="o">&gt;</span> outlier_cutoff<span class="p">)</span>
+loan_data_ROT<span class="o">&lt;-</span> loan_data<span class="p">[</span><span class="o">=</span>index_outlier_ROT<span class="p">,]</span>
+
+<span class="c1"># plot histograms</span>
+hist<span class="p">(</span>loan_data_ROT<span class="o">$</span>annual_inc<span class="p">,</span> <span class="kp">sqrt</span><span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>loan_data_ROT<span class="p">)),</span> xlab <span class="o">=</span> <span class="s">"Annual income rule of thumb"</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="images/15643509235120.jpg" style="width: 381px; height: auto; max-width: 100%;"/></p>
+<h4>Missing data and coarse classification</h4>
+<p>Strategies:
+- Delete row/column
+- Replace
+- Keep
+All the method can be applied to outliers too.</p>
+<p>Delete row or delete column:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Look at summary of loan_data</span>
+<span class="kp">summary</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate<span class="p">)</span>
+
+<span class="c1"># Get indices of missing interest rates: na_index</span>
+na_index <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate<span class="p">))</span>
+
+<span class="c1"># Remove observations with missing interest rates: loan_data_delrow_na</span>
+loan_data_delrow_na <span class="o">&lt;-</span> loan_data<span class="p">[</span><span class="o">-</span>na_index<span class="p">,</span> <span class="p">]</span>
+
+<span class="c1"># Make copy of loan_data</span>
+loan_data_delcol_na <span class="o">&lt;-</span> loan_data
+
+<span class="c1"># Delete interest rate column from loan_data_delcol_na</span>
+loan_data_delcol_na<span class="o">$</span>int_rate<span class="o">&lt;-</span> <span class="kc">NULL</span>
+</pre></div>
+<p>Replace missing data</p>
+<div class="highlight"><pre><span></span><span class="c1"># Compute the median of int_rate</span>
+median_ir<span class="o">&lt;-</span> median<span class="p">(</span>loan_data<span class="o">$</span>int_rate<span class="p">,</span> na.rm <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Make copy of loan_data</span>
+loan_data_replace <span class="o">&lt;-</span> loan_data
+
+<span class="c1"># Replace missing interest rates with median</span>
+loan_data_replace<span class="o">$</span>int_rate<span class="p">[</span>na_index<span class="p">]</span> <span class="o">&lt;-</span> median_ir
+
+<span class="c1"># Check if the NAs are gone</span>
+<span class="kp">summary</span><span class="p">(</span>loan_data_replace<span class="o">$</span>int_rate<span class="p">)</span>
+</pre></div>
+<p>Keep missing data - coarse classification (continuous variable)</p>
+<div class="highlight"><pre><span></span><span class="c1"># Make the necessary replacements in the coarse classification example below </span>
+loan_data<span class="o">$</span>ir_cat <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate<span class="p">))</span>
+
+loan_data<span class="o">$</span>ir_cat<span class="p">[</span><span class="kp">which</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate <span class="o">&lt;=</span> <span class="m">8</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">"0-8"</span>
+loan_data<span class="o">$</span>ir_cat<span class="p">[</span><span class="kp">which</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate <span class="o">&gt;</span> <span class="m">8</span> <span class="o">&amp;</span> loan_data<span class="o">$</span>int_rate <span class="o">&lt;=</span> <span class="m">11</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">"8-11"</span>
+loan_data<span class="o">$</span>ir_cat<span class="p">[</span><span class="kp">which</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate <span class="o">&gt;</span> <span class="m">11</span> <span class="o">&amp;</span> loan_data<span class="o">$</span>int_rate <span class="o">&lt;=</span> <span class="m">13.5</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">"11-13.5"</span>
+loan_data<span class="o">$</span>ir_cat<span class="p">[</span><span class="kp">which</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate <span class="o">&gt;</span> <span class="m">13.5</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">"13.5+"</span>
+loan_data<span class="o">$</span>ir_cat<span class="p">[</span><span class="kp">which</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>loan_data<span class="o">$</span>int_rate<span class="p">))]</span> <span class="o">&lt;-</span> <span class="s">"Missing"</span>
+
+loan_data<span class="o">$</span>ir_cat <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>loan_data<span class="o">$</span>ir_cat<span class="p">)</span>
+
+<span class="c1"># Look at your new variable using plot()</span>
+plot<span class="p">(</span>loan_data<span class="o">$</span>ir_cat<span class="p">)</span>
+</pre></div>
+<h4>Data splitting and confusion matrices</h4>
+<p>Split the data to training and testing set</p>
+<div class="highlight"><pre><span></span><span class="c1"># Set seed of 567</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">567</span><span class="p">)</span>
+
+<span class="c1"># Store row numbers for training set: index_train</span>
+index_train<span class="o">&lt;-</span> <span class="kp">sample</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="kp">nrow</span><span class="p">(</span>loan_data<span class="p">),</span> <span class="m">2</span><span class="o">/</span><span class="m">3</span><span class="o">*</span><span class="kp">nrow</span><span class="p">(</span>loan_data<span class="p">))</span>
+
+<span class="c1"># Create training set: training_set</span>
+training_set <span class="o">&lt;-</span> loan_data<span class="p">[</span>index_train<span class="p">,</span> <span class="p">]</span>
+
+<span class="c1"># Create test set: test_set</span>
+test_set <span class="o">&lt;-</span> loan_data<span class="p">[</span><span class="o">-</span>index_train<span class="p">,]</span>
+</pre></div>
+<p>Classification accuracy =  (TP + TN) / (TP+FP+TN+FN)
+Sensitivity: True Positive Rate
+Specificity: True Negative Rate</p>
+<div class="highlight"><pre><span></span><span class="c1"># Create confusion matrix</span>
+conf_matrix<span class="o">&lt;-</span> <span class="kp">table</span><span class="p">(</span>test_set<span class="o">$</span>loan_status<span class="p">,</span> model_pred<span class="p">)</span>
+
+<span class="c1"># Compute classification accuracy</span>
+accuracy<span class="o">&lt;-</span> <span class="p">(</span>conf_matrix<span class="p">[</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">]</span> <span class="o">+</span> conf_matrix<span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">])</span> <span class="o">/</span> <span class="kp">length</span><span class="p">(</span>model_pred<span class="p">)</span>
+
+<span class="c1"># Compute sensitivity</span>
+sensitivity<span class="o">&lt;-</span> conf_matrix<span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span>conf_matrix<span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">1</span><span class="p">]</span> <span class="o">+</span> conf_matrix<span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">])</span>
+</pre></div>
+<h3>Logistic Regression</h3>
+<h4>Interpretation of coefficient</h4>
+<p><img alt="" src="images/15643647627851.jpg" style="width: 590px; height: auto; max-width: 100%;"/>
+If variable age goes up by 1, the odds ratio of p(default)/(1- p(default)) are multiplied by a number less than 1.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Build a glm model with variable ir_cat (interest rate) as a predictor</span>
+log_model_cat<span class="o">&lt;-</span> glm<span class="p">(</span>loan_status <span class="o">~</span> ir_cat<span class="p">,</span> family <span class="o">=</span> <span class="s">"binomial"</span><span class="p">,</span> data <span class="o">=</span> training_set<span class="p">)</span>
+<span class="c1"># Print the parameter estimates </span>
+log_model_cat
+</pre></div>
+<p>The coefficient for interest_category 8-11 is 0.5414. Compared to the reference category with interest rates between 0% - 8%, the odds in favor of default change by a multiple of 1.718 (exp(0.5414))</p>
+<h4>Prediction</h4>
+<div class="highlight"><pre><span></span>log_model_full <span class="o">&lt;-</span> glm<span class="p">(</span>loan_status <span class="o">~</span> <span class="m">.</span><span class="p">,</span> family <span class="o">=</span> <span class="s">"binomial"</span><span class="p">,</span> data <span class="o">=</span> training_set<span class="p">)</span>
+<span class="o">*</span>predictions_all_full <span class="o">&lt;-</span> predict<span class="p">(</span>log_model_full<span class="p">,</span> newdata <span class="o">=</span> test_set<span class="p">,</span> type <span class="o">=</span> <span class="s">"response"</span><span class="p">)</span>
+<span class="c1"># Look at the range of the prediction</span>
+<span class="kp">range</span><span class="p">(</span>predictions_all_full<span class="p">)</span>
+</pre></div>
+<h4>Evaluation</h4>
+<div class="highlight"><pre><span></span><span class="c1"># Make a binary predictions-vector using a cut-off of 15%</span>
+pred_cutoff_15<span class="o">&lt;-</span> <span class="kp">ifelse</span><span class="p">(</span>predictions_all_full <span class="o">&gt;</span> <span class="m">0.15</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+
+<span class="c1"># Construct a confusion matrix</span>
+<span class="kp">table</span><span class="p">(</span>test_set<span class="o">$</span>loan_status<span class="p">,</span> pred_cutoff_15<span class="p">)</span>
+</pre></div>
+<h3>Decision tree</h3>
+<p>Deal with unbalanced data
+1. Undersampling or oversampling (Only the training set)
+2. Changing the prior probabilities
+3. Including a loss matrix (increasing the misclassification cost of default)</p>
+<p>Undersample
+<code>undersampled_training_set</code>: 1/3 of the training set consists of defaults, and 2/3 of non-defaults</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>rpart<span class="p">)</span>
+tree_undersample <span class="o">&lt;-</span> rpart<span class="p">(</span>loan_status <span class="o">~</span> <span class="m">.</span><span class="p">,</span> method <span class="o">=</span> <span class="s">"class"</span><span class="p">,</span>
+                          data <span class="o">=</span> undersampled_training_set<span class="p">,</span>
+                          control <span class="o">=</span> rpart.control<span class="p">(</span>cp <span class="o">=</span> <span class="m">0.001</span><span class="p">))</span>
+
+plot<span class="p">(</span>tree_undersample<span class="p">,</span> uniform <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+text<span class="p">(</span>tree_undersample<span class="p">)</span>
+</pre></div>
+<p>Changing the prior probabilities</p>
+<p>Including a loss matrix</p>
+<div class="highlight"><pre><span></span>tree_loss_matrix <span class="o">&lt;-</span> rpart<span class="p">(</span>loan_status <span class="o">~</span> <span class="m">.</span><span class="p">,</span> method <span class="o">=</span> <span class="s">"class"</span><span class="p">,</span>
+                          data <span class="o">=</span>  training_set<span class="p">,</span>
+                          parms <span class="o">=</span> <span class="kt">list</span><span class="p">(</span>loss <span class="o">=</span> <span class="kt">matrix</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span> ncol<span class="o">=</span><span class="m">2</span><span class="p">)),</span>
+                          control <span class="o">=</span> rpart.control<span class="p">(</span>cp <span class="o">=</span> <span class="m">0.001</span><span class="p">))</span>
+
+<span class="c1"># Plot the decision tree</span>
+plot<span class="p">(</span>tree_loss_matrix<span class="p">,</span> uniform<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Add labels to the decision tree</span>
+text<span class="p">(</span>tree_loss_matrix<span class="p">)</span>
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+  <h4>Pages</h4>
+
+  <ul>
+
+    <li ><a href="/pages/about.html">About</a></li>
+    <li ><a href="/pages/portfolio.html">Portfolio</a></li>
+  
+  <h4>Categories</h4>
+  <ul class="blank">
+    <li><a href="/category/blog.html">Blog</a></li>
+    <li><a href="/category/notes.html">Notes</a></li>
+    <li><a href="/category/tutorial.html">Tutorial</a></li>
+  </ul>
+
+
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="https://www.linkedin.com/in/lihesophia/">Linkedin</a></li>
+    <li><a href="https://github.com/sophia-li-he">Github</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/sophia-li-he" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="/theme/js/libs/gumby.min.js"></script>
+  <script src="/theme/js/plugins.js"></script>
+</body>
+</html>

@@ -1,5 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sophia He's Data Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-07-06T22:50:00-04:00</updated><entry><title>Statistical Thinking in Python (Part 2)</title><link href="/statistical-thinking-in-python-part-2.html" rel="alternate"></link><published>2019-07-06T22:50:00-04:00</published><updated>2019-07-06T22:50:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-07-06:/statistical-thinking-in-python-part-2.html</id><summary type="html">&lt;h3&gt;Parameter estimation by optimization&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sophia He's Data Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-07-20T10:50:00-04:00</updated><entry><title>Credit Risk Modeling in R</title><link href="/credit-risk-modeling-in-r.html" rel="alternate"></link><published>2019-07-20T10:50:00-04:00</published><updated>2019-07-20T10:50:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-07-20:/credit-risk-modeling-in-r.html</id><summary type="html">&lt;h3&gt;Introduction and EDA&lt;/h3&gt;
+&lt;p&gt;Components of expected loss (EL)
+- Probability of default (PD)
+- Exposure at default (EAD): the amount of the loan that still needs to be repaid at the time of default
+- Loss given default (LGD): the amount of loss if there is a default (express as a percentage of …&lt;/p&gt;</summary><content type="html">&lt;h3&gt;Introduction and EDA&lt;/h3&gt;
+&lt;p&gt;Components of expected loss (EL)
+- Probability of default (PD)
+- Exposure at default (EAD): the amount of the loan that still needs to be repaid at the time of default
+- Loss given default (LGD): the amount of loss if there is a default (express as a percentage of EAD)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;EL = PD * EAD * LGD&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Information used by banks:
+- Application information: demo...
+- Behavioral information:
+    - current account balance
+    - payment arrears in account history&lt;/p&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt="" src="images/15643474511743.jpg" style="width: 911px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
+&lt;h4&gt;Cross Table&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Load the gmodels package &lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;gmodels&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Call CrossTable() on loan_status&lt;/span&gt;
+CrossTable&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;loan_status&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Call CrossTable() on grade and loan_status&lt;/span&gt;
+CrossTable&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;grade&lt;span class="p"&gt;,&lt;/span&gt; y&lt;span class="o"&gt;=&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;loan_status&lt;span class="p"&gt;,&lt;/span&gt; prop.r&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; prop.c&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; prop.t&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; prop.chisq&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt="-w292" src="images/15643476894532.jpg" style="width: 584px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
+&lt;h4&gt;Histograms and outliers&lt;/h4&gt;
+&lt;p&gt;Plot histogram of the annual income&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;hist_income&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; hist&lt;span class="p"&gt;(&lt;/span&gt;loan_date&lt;span class="o"&gt;$&lt;/span&gt;annual_inc&lt;span class="p"&gt;,&lt;/span&gt; xlab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Annual Income"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Histogram of Annual Income"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Check the break of the annual income&lt;/span&gt;
+hist_income&lt;span class="o"&gt;$&lt;/span&gt;breaks
+
+&lt;span class="c1"&gt;# Set the n_breaks&lt;/span&gt;
+n_breaks&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="p"&gt;))&lt;/span&gt;
+hist_income_n&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt;  hist&lt;span class="p"&gt;(&lt;/span&gt;loan_date&lt;span class="o"&gt;$&lt;/span&gt;annual_inc&lt;span class="p"&gt;,&lt;/span&gt; breaks&lt;span class="o"&gt;=&lt;/span&gt;n_breaks&lt;span class="p"&gt;,&lt;/span&gt; xlab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Annual Income"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Histogram of Annual Income"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt="" src="images/15643504855878.jpg" style="width: 423px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
+&lt;p&gt;Plot to see the outlier of annual income&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;loan_date&lt;span class="o"&gt;$&lt;/span&gt;annual_inc&lt;span class="p"&gt;,&lt;/span&gt; ylab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Annual Income"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt="" src="images/15643505048608.jpg" style="width: 494px; height: auto; max-width: 100%;"/&gt;
+Outlier:
+- expert judgement
+- rule of thumb: Q1 - 1.5 * IQR -- Q3 + 1.5 * IQR
+- mostly: combination of both&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# expert judgement: annual &amp;gt; 3m&lt;/span&gt;
+index_outlier_expert&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_date&lt;span class="o"&gt;$&lt;/span&gt;annual_inc &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;3000000&lt;/span&gt;
+loan_data_expert&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_date&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;index_outlier_expert&lt;span class="p"&gt;,]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# rule of thumb: bigger than Q3 + 1.5 *IQR&lt;/span&gt;
+outlier_cutoff&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; quantile&lt;span class="p"&gt;(&lt;/span&gt;loan_date&lt;span class="o"&gt;$&lt;/span&gt;annual_inc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;0.75&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="m"&gt;1.5&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; IQR&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;annual_inc&lt;span class="p"&gt;)&lt;/span&gt;
+index_outlier_ROT&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;annual_inc &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; outlier_cutoff&lt;span class="p"&gt;)&lt;/span&gt;
+loan_data_ROT&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_data&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;index_outlier_ROT&lt;span class="p"&gt;,]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# plot histograms&lt;/span&gt;
+hist&lt;span class="p"&gt;(&lt;/span&gt;loan_data_ROT&lt;span class="o"&gt;$&lt;/span&gt;annual_inc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data_ROT&lt;span class="p"&gt;)),&lt;/span&gt; xlab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Annual income rule of thumb"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt="" src="images/15643509235120.jpg" style="width: 381px; height: auto; max-width: 100%;"/&gt;&lt;/p&gt;
+&lt;h4&gt;Missing data and coarse classification&lt;/h4&gt;
+&lt;p&gt;Strategies:
+- Delete row/column
+- Replace
+- Keep
+All the method can be applied to outliers too.&lt;/p&gt;
+&lt;p&gt;Delete row or delete column:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Look at summary of loan_data&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Get indices of missing interest rates: na_index&lt;/span&gt;
+na_index &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Remove observations with missing interest rates: loan_data_delrow_na&lt;/span&gt;
+loan_data_delrow_na &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_data&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;na_index&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Make copy of loan_data&lt;/span&gt;
+loan_data_delcol_na &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_data
+
+&lt;span class="c1"&gt;# Delete interest rate column from loan_data_delcol_na&lt;/span&gt;
+loan_data_delcol_na&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kc"&gt;NULL&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Replace missing data&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Compute the median of int_rate&lt;/span&gt;
+median_ir&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; median&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;,&lt;/span&gt; na.rm &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Make copy of loan_data&lt;/span&gt;
+loan_data_replace &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_data
+
+&lt;span class="c1"&gt;# Replace missing interest rates with median&lt;/span&gt;
+loan_data_replace&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;[&lt;/span&gt;na_index&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; median_ir
+
+&lt;span class="c1"&gt;# Check if the NAs are gone&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data_replace&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Keep missing data - coarse classification (continuous variable)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Make the necessary replacements in the coarse classification example below &lt;/span&gt;
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;NA&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;))&lt;/span&gt;
+
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;"0-8"&lt;/span&gt;
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="m"&gt;11&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;"8-11"&lt;/span&gt;
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;11&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="m"&gt;13.5&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;"11-13.5"&lt;/span&gt;
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;13.5&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;"13.5+"&lt;/span&gt;
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;int_rate&lt;span class="p"&gt;))]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;"Missing"&lt;/span&gt;
+
+loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Look at your new variable using plot()&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="o"&gt;$&lt;/span&gt;ir_cat&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;Data splitting and confusion matrices&lt;/h4&gt;
+&lt;p&gt;Split the data to training and testing set&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Set seed of 567&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;567&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Store row numbers for training set: index_train&lt;/span&gt;
+index_train&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loan_data&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Create training set: training_set&lt;/span&gt;
+training_set &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_data&lt;span class="p"&gt;[&lt;/span&gt;index_train&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Create test set: test_set&lt;/span&gt;
+test_set &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; loan_data&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;index_train&lt;span class="p"&gt;,]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Classification accuracy =  (TP + TN) / (TP+FP+TN+FN)
+Sensitivity: True Positive Rate
+Specificity: True Negative Rate&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Create confusion matrix&lt;/span&gt;
+conf_matrix&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test_set&lt;span class="o"&gt;$&lt;/span&gt;loan_status&lt;span class="p"&gt;,&lt;/span&gt; model_pred&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Compute classification accuracy&lt;/span&gt;
+accuracy&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;conf_matrix&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; conf_matrix&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;model_pred&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Compute sensitivity&lt;/span&gt;
+sensitivity&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; conf_matrix&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;conf_matrix&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; conf_matrix&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Logistic Regression&lt;/h3&gt;
+&lt;h4&gt;Interpretation of coefficient&lt;/h4&gt;
+&lt;p&gt;&lt;img alt="" src="images/15643647627851.jpg" style="width: 590px; height: auto; max-width: 100%;"/&gt;
+If variable age goes up by 1, the odds ratio of p(default)/(1- p(default)) are multiplied by a number less than 1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Build a glm model with variable ir_cat (interest rate) as a predictor&lt;/span&gt;
+log_model_cat&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;loan_status &lt;span class="o"&gt;~&lt;/span&gt; ir_cat&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"binomial"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; training_set&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# Print the parameter estimates &lt;/span&gt;
+log_model_cat
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The coefficient for interest_category 8-11 is 0.5414. Compared to the reference category with interest rates between 0% - 8%, the odds in favor of default change by a multiple of 1.718 (exp(0.5414))&lt;/p&gt;
+&lt;h4&gt;Prediction&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;log_model_full &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;loan_status &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"binomial"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; training_set&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;*&lt;/span&gt;predictions_all_full &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;log_model_full&lt;span class="p"&gt;,&lt;/span&gt; newdata &lt;span class="o"&gt;=&lt;/span&gt; test_set&lt;span class="p"&gt;,&lt;/span&gt; type &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"response"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# Look at the range of the prediction&lt;/span&gt;
+&lt;span class="kp"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;predictions_all_full&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;Evaluation&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Make a binary predictions-vector using a cut-off of 15%&lt;/span&gt;
+pred_cutoff_15&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;ifelse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;predictions_all_full &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.15&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Construct a confusion matrix&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test_set&lt;span class="o"&gt;$&lt;/span&gt;loan_status&lt;span class="p"&gt;,&lt;/span&gt; pred_cutoff_15&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Decision tree&lt;/h3&gt;
+&lt;p&gt;Deal with unbalanced data
+1. Undersampling or oversampling (Only the training set)
+2. Changing the prior probabilities
+3. Including a loss matrix (increasing the misclassification cost of default)&lt;/p&gt;
+&lt;p&gt;Undersample
+&lt;code&gt;undersampled_training_set&lt;/code&gt;: 1/3 of the training set consists of defaults, and 2/3 of non-defaults&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rpart&lt;span class="p"&gt;)&lt;/span&gt;
+tree_undersample &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; rpart&lt;span class="p"&gt;(&lt;/span&gt;loan_status &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"class"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                          data &lt;span class="o"&gt;=&lt;/span&gt; undersampled_training_set&lt;span class="p"&gt;,&lt;/span&gt;
+                          control &lt;span class="o"&gt;=&lt;/span&gt; rpart.control&lt;span class="p"&gt;(&lt;/span&gt;cp &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+plot&lt;span class="p"&gt;(&lt;/span&gt;tree_undersample&lt;span class="p"&gt;,&lt;/span&gt; uniform &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+text&lt;span class="p"&gt;(&lt;/span&gt;tree_undersample&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Changing the prior probabilities&lt;/p&gt;
+&lt;p&gt;Including a loss matrix&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tree_loss_matrix &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; rpart&lt;span class="p"&gt;(&lt;/span&gt;loan_status &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"class"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                          data &lt;span class="o"&gt;=&lt;/span&gt;  training_set&lt;span class="p"&gt;,&lt;/span&gt;
+                          parms &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;loss &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; ncol&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+                          control &lt;span class="o"&gt;=&lt;/span&gt; rpart.control&lt;span class="p"&gt;(&lt;/span&gt;cp &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Plot the decision tree&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;tree_loss_matrix&lt;span class="p"&gt;,&lt;/span&gt; uniform&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Add labels to the decision tree&lt;/span&gt;
+text&lt;span class="p"&gt;(&lt;/span&gt;tree_loss_matrix&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="Finance"></category><category term="R"></category></entry><entry><title>Statistical Thinking in Python (Part 2)</title><link href="/statistical-thinking-in-python-part-2.html" rel="alternate"></link><published>2019-07-06T22:50:00-04:00</published><updated>2019-07-06T22:50:00-04:00</updated><author><name>Sophia He</name></author><id>tag:None,2019-07-06:/statistical-thinking-in-python-part-2.html</id><summary type="html">&lt;h3&gt;Parameter estimation by optimization&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;nohitter_times&lt;/code&gt; is an array with length of 251. array([ 843, 1613, 1101,  215,  684,  814,..])&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Seed random number generator&lt;/span&gt;
 &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;42&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
